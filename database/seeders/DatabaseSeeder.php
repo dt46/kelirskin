@@ -2,8 +2,12 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +16,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Membuat role baru
+        $adminRoleId = Str::uuid(); // Generate UUID for admin role
+        $admin_role = Role::create([
+            'id' => $adminRoleId->toString(), // Convert UUID object to string
+            'name' => 'admin'
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $resellerRoleId = Str::uuid(); // Generate UUID for reseller role
+        $reseller_role = Role::create([
+            'id' => $resellerRoleId->toString(), // Convert UUID object to string
+            'name' => 'reseller'
+        ]);
+
+        // Menggunakan UUID dari role yang telah dibuat untuk membuat user
+        $adminUserId = Str::uuid(); // Generate UUID for admin user
+        $admin = User::create([
+            'id' => $adminUserId->toString(), // Convert UUID object to string
+            'role_id' => $adminRoleId->toString(), // Convert UUID object to string
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('123')
+        ]);
     }
 }

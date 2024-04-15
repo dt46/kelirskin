@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->unique();
+            $table->foreignUuid('user_id')->unique();
             $table->timestamps();
         });
     }

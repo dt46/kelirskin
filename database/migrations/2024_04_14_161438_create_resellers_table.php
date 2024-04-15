@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('resellers', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->unique();
+            $table->foreignUuid('user_id')->unique();
+            $table->string('no_hp');
+            $table->string('provinsi');
+            $table->string('kota');
+            $table->string('kecamatan');
+            $table->string('alamat_detail');
+            $table->string('foto_ktp');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
