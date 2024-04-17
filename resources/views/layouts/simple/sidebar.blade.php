@@ -42,7 +42,7 @@
                     </li>
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('dashboard.index') }}">
+                        <a class="sidebar-link sidebar-title link-nav" href="">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
                             </svg>
@@ -61,15 +61,10 @@
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
                             </svg><span>Pelaporan</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('pelaporan-kedatangan.index') }}">Kedatangan</a></li>
-                            <li><a href="{{ route('keberangkatan') }}">Keberangkatan</a></li>
-                            @if ((auth()->user()->role->name == "admin") || auth()->user()->role->name == "petugas")
-                            <li><a href="">Manifest Kedatangan</a></li>
-                            <li><a href="">Manifest Keberangkatan</a></li>
-                            @endif
+                            <li><a href="">Kedatangan</a></li>
+                            <li><a href="">Keberangkatan</a></li>
                         </ul>
                     </li>
-                    @if ((auth()->user()->role->name == "admin") || auth()->user()->role->name == "petugas")
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
@@ -79,15 +74,12 @@
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
                             </svg><span>Statistik</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('kedatangan') }}">Kedatangan</a></li>
-                            <li><a href="{{ route('keberangkatan') }}">Keberangkatan</a></li>
+                            <li><a href="">Kedatangan</a></li>
+                            <li><a href="">Keberangkatan</a></li>
                             <li><a href="">Manifest Kedatangan</a></li>
                             <li><a href="">Manifest Keberangkatan</a></li>
                         </ul>
                     </li>
-                    @endif
-
-                    @if (auth()->user()->role->name == "admin")
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
@@ -97,17 +89,14 @@
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
                             </svg><span>Master Data</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('kedatangan') }}">Data TPI</a></li>
+                            <li><a href="">Data TPI</a></li>
                             <li><a href="">Data User Agen</a></li>
                             <li><a href="">Data User Petugas</a></li>
                         </ul>
                     </li>
-                    @endif
-
-                    @if (auth()->user()->role->name == "agen")
                     <li class="sidebar-list">
                         <i class="fa fa-thumb-tack"></i>
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('profile-agen') }}">
+                        <a class="sidebar-link sidebar-title link-nav" href="">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-user') }}"></use>
                             </svg>
@@ -117,9 +106,8 @@
                             <span>Profile</span>
                         </a>
                     </li>
-                    @endif
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('profile-agen') }}">
+                        <a class="sidebar-link sidebar-title link-nav" href="">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-user') }}"></use>
                             </svg>
@@ -623,7 +611,7 @@
                                                 <h5> Authentication</h5>
                                             </div>
                                             <ul class="submenu-content opensubmegamenu">
-                                                <li><a href="{{ route('login') }}" target="_blank">Login
+                                                <li><a href="" target="_blank">Login
                                                         Simple</a></li>
                                                 <li><a href="{{ route('login-one') }}" target="_blank">Login
                                                         with bg image</a>
