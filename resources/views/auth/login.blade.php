@@ -1,5 +1,5 @@
 @extends('layouts.authentication.master')
-@section('title', 'Login-one')
+@section('title', 'Login')
 
 @section('css')
 @endsection
@@ -14,7 +14,7 @@
       <div class="col-xl-5 p-0">
          <div class="login-card">
             <div>
-               <div><a class="logo text-start"><img class="img-fluid for-light" src="{{asset('assets/images/kelirskin/logo kelirskin1.png')}}" alt="looginpage"></a></div>
+               <div><a class="logo text-start text-center"><img class="img-fluid for-light" src="{{asset('assets/images/kelirskin/logo kelirskin1.png')}}" alt="looginpage"></a></div>
                <div class="login-main">
                   @if(session()->has('loginFailed'))
                   <div class="alert alert-warning dark" role="alert">

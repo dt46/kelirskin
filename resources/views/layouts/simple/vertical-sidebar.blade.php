@@ -22,7 +22,7 @@
 					<li class="sidebar-main-title">
 						<div>
 							<h6 class="lan-1">{{ trans('lang.General') }} </h6>
-							<p class="lan-2">{{ trans('lang.Dashboards,widgets & layout.') }}</p>
+							<p class="lan-2">{{ trans('lang.MANAJEMEN RESELLER') }}</p>
 						</div>
 					</li>
 					<li class="sidebar-list">

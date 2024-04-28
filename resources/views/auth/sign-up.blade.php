@@ -1,5 +1,5 @@
 @extends('layouts.authentication.master')
-@section('title', 'Sign-up-one')
+@section('title', 'Sign-up')
 
 @section('css')
 @endsection
@@ -36,13 +36,18 @@ input[type="file"]:focus {
       <div class="col-xl-7 p-0">
          <div class="login-card">
             <div>
-               <div><a class="logo" href="{{ route('index') }}"><img class="img-fluid for-light" src="{{asset('assets/images/logo/login.png')}}" alt="looginpage"><img class="img-fluid for-dark" src="{{asset('assets/images/logo/logo_dark.png')}}" alt="looginpage"></a></div>
+               <div><a class="logo" style="text-align: center;"><img class="img-fluid for-light" src="{{asset('assets/images/kelirskin/logo kelirskin1.png')}}" alt="looginpage"></a></div>
                <div class="login-main">
-                  <form class="theme-form">
+                  @if (session('res-status'))
+                    <div class="alert alert-{{session('res-status')['status']}}">
+                        {{ session('res-status')['msg'] }}
+                    </div>
+                  @endif
+                  <form class="theme-form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data" >
                      @csrf
                      <h4>Create your account</h4>
                      <p>Enter your email and password</p>
-                     <div class="form-group" action="/signup" method="post">
+                     <div class="form-group">
                         <!-- Input Email -->
                         <label class="col-form-label">Email</label>
                         <input class="form-control" type="email" required=""
@@ -65,7 +70,7 @@ input[type="file"]:focus {
                         <label class="col-form-label">Nama</label>
                         <input class="form-control" type="text" required=""
                            placeholder="Enter your name" name="nama" value="{{ old('nama') }}">
-                        @error('email')
+                        @error('nama')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                      </div>
@@ -92,7 +97,7 @@ input[type="file"]:focus {
                         <div class="col-md-6">
                            <label class="col-form-label">Kota</label>
                            <input class="form-control" type="text" required=""
-                              placeholder="Kota" name="kota" value="{{ old('email') }}">
+                              placeholder="Kota" name="kota" value="{{ old('kota') }}">
                            @error('kota')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
@@ -100,7 +105,7 @@ input[type="file"]:focus {
                         <div class="col-md-6">
                            <label class="col-form-label">Kecamatan</label>
                            <input class="form-control" type="text" required=""
-                              placeholder="Kecamatan" name="kecamatan" value="{{ old('email') }}">
+                              placeholder="Kecamatan" name="kecamatan" value="{{ old('kecamatan') }}">
                            @error('kecamatan')
                            <small class="text-danger">{{ $message }}</small>
                            @enderror
@@ -110,7 +115,7 @@ input[type="file"]:focus {
                      <div class="form-group">
                         <label class="col-form-label">Alamat Lengkap</label>
                         <input class="form-control" type="text" required=""
-                           placeholder="Enter your full address" name="alamat_detail" value="{{ old('alamat)_detail') }}">
+                           placeholder="Enter your full address" name="alamat_detail" value="{{ old('alamat_detail') }}">
                         @error('alamat_detail')
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -121,14 +126,10 @@ input[type="file"]:focus {
                         <small class="form-text text-muted">Please upload a square photo of your KTP.</small>
                      </div>
                      <div class="form-group mb-0">
-                        <div class="checkbox p-0">
-                           <input id="checkbox1" type="checkbox">
-                           <label class="text-muted" for="checkbox1">Agree with<a class="ms-2" href="#">Privacy Policy</a></label>
-                        </div>
                         <button class="btn btn-primary btn-block" type="submit">Create Account</button>
                      </div>
-                     <p class="mt-4 mb-0">Already have an account?<a class="ms-2" href="{{ route('signin') }}">Sign in</a></p>
                   </form>
+                  <p class="mt-4 mb-0">Already have an account?<a class="ms-2" href="{{ route('signin') }}">Sign in</a></p>
                </div>
             </div>
          </div>

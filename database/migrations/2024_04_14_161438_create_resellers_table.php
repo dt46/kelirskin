@@ -19,8 +19,10 @@ return new class extends Migration
             $table->string('kota');
             $table->string('kecamatan');
             $table->string('alamat_detail');
+            // $table->decimal('latitude', 10, 8);
+            // $table->decimal('longitude', 11, 8);
             $table->string('foto_ktp');
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

@@ -38,5 +38,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123')
         ]);
+
+        $resellerUserId = str::uuid();
+        $reseller = User::create([
+            'id' => $resellerUserId,
+            'role_id' => $resellerRoleId->toString(), // Convert UUID object to string
+            'name' => 'Reseller',
+            'email' => 'reseller@gmail.com',
+            'password' => Hash::make('123')
+        ]);
     }
 }

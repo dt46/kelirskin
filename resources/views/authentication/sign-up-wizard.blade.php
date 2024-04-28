@@ -45,7 +45,7 @@
                            <small>Complete.. !</small>
                         </a>
                      </li>
-                     <li>                           <img src="{{asset('assets/images/login/icon.png')}}" alt="looginpage"></li>
+                     <li><img src="{{asset('assets/images/login/icon.png')}}" alt="looginpage"></li>
                   </ul>
                   <div id="step-1">
                      <div class="wizard-title">

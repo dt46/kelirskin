@@ -10,9 +10,9 @@
   <meta name="keywords"
     content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
   <meta name="author" content="pixelstrap">
-  <link rel="icon" href="{{asset('assets/images/ikankakap/logo/logo.png')}}" type="image/x-icon">
-  <link rel="shortcut icon" href="{{asset('assets/images/ikankakap/logo/logo.png')}}" type="image/x-icon">
-  <title>Ikan Kakap Merah</title>
+  <link rel="icon" href="{{asset('assets/images/kelirskin/logo kelirskin1.png')}}" type="image/x-icon">
+  <link rel="shortcut icon" href="{{asset('assets/images/kelirskin/logo kelirskin1.png')}}" type="image/x-icon">
+  <title>Kelirskin</title>
   <!-- Google font-->
   <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap"
     rel="stylesheet">
@@ -20,6 +20,16 @@
     rel="stylesheet">
   @include('layouts.simple.css')
   @yield('style')
+  <style>
+    .logo-wrapper,
+    .logo-icon-wrapper {
+        background-color: #AB764E;
+    }
+    .sidebar-wrapper {
+        width: 100%; /* Panjang */
+        height: auto; /* Lebar */
+    }           
+  </style>
 </head>
 
 <body @if(Route::current()->getName() == 'index') onload="startTime()" @elseif (Route::current()->getName() ==
@@ -56,7 +66,7 @@
               </div>
               <div class="col-6">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="{{ route('dashboard.index')}}">
+                  <li class="breadcrumb-item"><a href="{{ route('index')}}">
                       <svg class="stroke-icon">
                         <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
                       </svg></a></li>

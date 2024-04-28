@@ -1,4 +1,4 @@
-<div class="page-header">
+<div class="page-header" style="background-color: #AB764E;">
   <div class="header-wrapper row m-0">
     <form class="form-inline search-full col" action="#" method="get">
       <div class="form-group w-100">
@@ -16,52 +16,27 @@
     <div class="header-logo-wrapper col-auto p-0">
       <div class="logo-wrapper">
         <a href="">
-          <img class="img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt="">
+          <img class="img-fluid" src="/assets/images/logo/logo.png" alt="">
         </a>
       </div>
       <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
     </div>
     <div class="left-header col-xxl-5 col-xl-6 col-lg-5 col-md-4 col-sm-3 p-0">
-      <div class="notification-slider">
-        <div class="d-flex h-100">
-          <img src="{{ asset('assets/images/giftools.gif') }}" alt="gif">
-          <h6 class="mb-0 w-auto">
-            <span>Jangan Sampai Terlewatkan!</span>
-          </h6>
-        </div>
-        <div class="d-flex h-100">
-          <img src="{{ asset('assets/images/giftools.gif') }}" alt="gif">
-          <h6 class="mb-0 f-w-400"><span class="f-light">Laporkan Kapal Anda</span></h6>
-          <a class="font-primary fw-bold" href="" target="_blank">Sekarang!</a>
-        </div>
-      </div>
     </div>
     <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
       <ul class="nav-menus">
-        <li>
-          <span class="header-search">
-            <svg>
-              <use href="{{ asset('assets/svg/icon-sprite.svg#search') }}"></use>
-            </svg>
-          </span>
-        </li>
-        <li>
-          <div class="mode">
-            <svg>
-              <use href="{{ asset('assets/svg/icon-sprite.svg#moon') }}"></use>
-            </svg>
-          </div>
-        </li>
         <li class="profile-nav onhover-dropdown pe-0 py-0">
-          <div class="media profile-media"><img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}"
-              alt="">
-            <div class="media-body"><span>Emay Walter</span>
-              <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
+          <div class="media profile-media">
+            {{-- <img class="b-r-10" src="/assets/images/dashboard/profile.png" alt=""> --}}
+            <div class="media-body" style="color: white;"><span>{{ auth()->user()->name }}</span>
+              <p class="mb-0 font-roboto" style="color: white;">{{ auth()->user()->role->name }} <i class="middle fa fa-angle-down"></i></p>
             </div>
           </div>
           <ul class="profile-dropdown onhover-show-div">
-            <li><a href="#"><i data-feather="user"></i><span>Akun</span></a></li>
-            <li><a href="#"><i data-feather="settings"></i><span>Pengaturan</span></a></li>
+            @if (auth()->user()->role->name == "reseller")
+            <li><a href="/profile"><i data-feather="user"></i><span>Akun</span></a></li>
+            @endif
+            {{-- <li><a href="#"><i data-feather="settings"></i><span>Pengaturan</span></a></li> --}}
             <li>
               <form action="/signout" method="post" id="signoutForm">
                 @csrf

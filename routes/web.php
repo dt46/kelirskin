@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\auth\SignInController;
+use App\Http\Controllers\auth\SignUpController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Artisan;
@@ -26,13 +28,35 @@ Route::get('lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang');
 
-Route::middleware(['auth'])->group(function () {
-    Route::middleware(['IsAdmin'])->group(function () {
-        
-    });
+// ======================================================================
+Route::domain(env('APP_DOMAIN', "kelirskin.test"))->group(function () {
+    Route::redirect('/', '/general-widget');
+
+    Route::get('/signin', [SignInController::class, 'index'])->middleware('guest')->name('signin');
+    Route::post('/signin', [SignInController::class, 'login']);
+    Route::post('/signout', [SignInController::class, 'logout']);
+
+    Route::get('/signup', [SignUpController::class, 'index'])->name("signup");
+    Route::post('/register', [SignUpController::class, 'signUp'])->name('register');
 });
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::domain('{subdomain}.' . env('APP_DOMAIN', "kelirskin.test"))->group(function () {
+    Route::redirect('/', '/index');
+
+    Route::get('/signin', [SignInController::class, 'index'])->middleware('guest')->name('subdomain.signin');
+    Route::post('/signin', [SignInController::class, 'login']);
+    Route::post('/signout', [SignInController::class, 'logout']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('IsAdmin')->name('dashboard');
+
+    Route::prefix('widgets')->middleware(['IsReseller'])->group(function () {
+        Route::view('general-widget', 'widgets.general-widget')->name('general-widget');
+        Route::view('chart-widget', 'widgets.chart-widget')->name('chart-widget');
+    });        
+});
+
 
 
 //========================================================================================
