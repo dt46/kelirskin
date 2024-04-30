@@ -36,20 +36,33 @@ Route::domain(env('APP_DOMAIN', "kelirskin.test"))->group(function () {
     Route::post('/signin', [SignInController::class, 'login']);
     Route::post('/signout', [SignInController::class, 'logout']);
 
-    Route::get('/signup', [SignUpController::class, 'index'])->name("signup");
-    Route::post('/register', [SignUpController::class, 'signUp'])->name('register');
+    Route::controller(SignUpController::class)
+        ->group(function () {
+            Route::get("/signup", 'index')->name("signup");
+            Route::post("/signup", 'signUp');
+        });
 });
 
 Route::domain('{subdomain}.' . env('APP_DOMAIN', "kelirskin.test"))->group(function () {
-    Route::redirect('/', '/index');
+    Route::get('/', function () {
+        return redirect()->route('index');
+    });
+});
 
-    Route::get('/signin', [SignInController::class, 'index'])->middleware('guest')->name('subdomain.signin');
-    Route::post('/signin', [SignInController::class, 'login']);
-    Route::post('/signout', [SignInController::class, 'logout']);
+Route::domain('{subdomain}.' . env('APP_DOMAIN', "kelirskin.test"))->group(function () {
+    Route::controller(SignInController::class)->group(function () {
+        Route::get("/signin", 'index')->middleware('guest');
+        Route::post('/signin', 'login');
+        Route::post('/signout', 'logout');
+    });
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('IsAdmin')->name('dashboard');
+    Route::controller(DashboardController::class)
+        ->middleware('IsAdmin')
+        ->group(function () {
+            Route::get('/dashboard', 'index')->name('index');
+        });
 
     Route::prefix('widgets')->middleware(['IsReseller'])->group(function () {
         Route::view('general-widget', 'widgets.general-widget')->name('general-widget');

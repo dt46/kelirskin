@@ -10,13 +10,13 @@
 /* Membuat input file menjadi persegi panjang */
 input[type="file"] {
     width: 100%;
-    padding: 20px; /* Ubah sesuai kebutuhan */
+    padding: 20px;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
     background-color: #f8f8f8;
-    height: auto; /* Menyesuaikan tinggi sesuai lebar */
-    display: block; /* Membuat input file menjadi blok */
+    height: auto;
+    display: block;
 }
 
 /* Memastikan tampilan input file yang konsisten */
@@ -26,7 +26,6 @@ input[type="file"]:focus {
 }
 
 </style>
-
 @endsection
 
 @section('content')
@@ -43,12 +42,11 @@ input[type="file"]:focus {
                         {{ session('res-status')['msg'] }}
                     </div>
                   @endif
-                  <form class="theme-form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data" >
+                  <form class="theme-form" method="POST" action="/signup" enctype="multipart/form-data" >
                      @csrf
                      <h4>Create your account</h4>
                      <p>Enter your email and password</p>
                      <div class="form-group">
-                        <!-- Input Email -->
                         <label class="col-form-label">Email</label>
                         <input class="form-control" type="email" required=""
                            placeholder="Enter your active email" name="email" value="{{ old('email') }}">
@@ -57,7 +55,6 @@ input[type="file"]:focus {
                         @enderror
                      </div>
                      <div class="form-group">
-                        <!-- Input Password -->
                         <label class="col-form-label">Password</label>
                         <input class="form-control" type="password" required=""
                            placeholder="************" name="password" value="{{ old('password') }}">
@@ -74,7 +71,6 @@ input[type="file"]:focus {
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                      </div>
-                     <!-- Input No Handphone -->
                      <div class="form-group">
                         <label class="col-form-label">No Handphone</label>
                         <input class="form-control" type="number" required=""
@@ -83,7 +79,6 @@ input[type="file"]:focus {
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                      </div>
-                     <!-- Input Provinsi -->
                      <div class="form-group">
                         <label class="col-form-label">Provinsi</label>
                         <input class="form-control" type="text" required=""
@@ -92,7 +87,6 @@ input[type="file"]:focus {
                         <small class="text-danger">{{ $message }}</small>
                         @enderror
                      </div>
-                     <!-- Input Kota dan Kecamatan -->
                      <div class="row">
                         <div class="col-md-6">
                            <label class="col-form-label">Kota</label>
@@ -111,7 +105,6 @@ input[type="file"]:focus {
                            @enderror
                         </div>
                      </div>
-                     <!-- Input Alamat Lengkap -->
                      <div class="form-group">
                         <label class="col-form-label">Alamat Lengkap</label>
                         <input class="form-control" type="text" required=""
@@ -122,8 +115,11 @@ input[type="file"]:focus {
                      </div>
                      <div class="form-group">
                         <label class="col-form-label">Upload Foto KTP</label>
-                        <input type="file" class="form-control-file" id="uploadKTP" name="foto_ktp">
+                        <input type="file" class="form-control-file" id="uploadKTP" name="foto_ktp" value="{{ old('foto_ktp') }}">
                         <small class="form-text text-muted">Please upload a square photo of your KTP.</small>
+                        @error('foto_ktp')
+                        <small class="text-danger">{{ $message }}</small>
+                        @enderror
                      </div>
                      <div class="form-group mb-0">
                         <button class="btn btn-primary btn-block" type="submit">Create Account</button>
