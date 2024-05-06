@@ -22,7 +22,8 @@ class SignUpRequest extends FormRequest
             'kota' => ['required'],
             'kecamatan' => ['required'],
             'alamat_detail' => ['required'],
-            'foto_ktp' => ['required', 'file']
+            // 'lokasi_geojson' => ['required'],
+            'foto_ktp' => ['required'],
         ];
     }
 }

@@ -17,35 +17,35 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Membuat role baru
-        $adminRoleId = Str::uuid(); // Generate UUID for admin role
+        $adminRoleId = Str::uuid()->toString(); // Generate UUID and convert to string for admin role
         $admin_role = Role::create([
-            'id' => $adminRoleId->toString(), // Convert UUID object to string
+            'id' => $adminRoleId,
             'name' => 'admin'
         ]);
-
-        $resellerRoleId = Str::uuid(); // Generate UUID for reseller role
+    
+        $resellerRoleId = Str::uuid()->toString(); // Generate UUID and convert to string for reseller role
         $reseller_role = Role::create([
-            'id' => $resellerRoleId->toString(), // Convert UUID object to string
+            'id' => $resellerRoleId,
             'name' => 'reseller'
         ]);
-
+    
         // Menggunakan UUID dari role yang telah dibuat untuk membuat user
-        $adminUserId = Str::uuid(); // Generate UUID for admin user
+        $adminUserId = Str::uuid()->toString(); // Generate UUID and convert to string for admin user
         $admin = User::create([
-            'id' => $adminUserId->toString(), // Convert UUID object to string
-            'role_id' => $adminRoleId->toString(), // Convert UUID object to string
+            'id' => $adminUserId,
+            'role_id' => $adminRoleId,
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123')
         ]);
-
-        $resellerUserId = str::uuid();
+    
+        $resellerUserId = Str::uuid()->toString(); // Generate UUID and convert to string for reseller user
         $reseller = User::create([
             'id' => $resellerUserId,
-            'role_id' => $resellerRoleId->toString(), // Convert UUID object to string
+            'role_id' => $resellerRoleId,
             'name' => 'Reseller',
             'email' => 'reseller@gmail.com',
             'password' => Hash::make('123')
-        ]);
-    }
+        ]); 
+    }    
 }

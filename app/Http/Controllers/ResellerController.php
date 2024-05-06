@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreResellerRequest;
 use App\Http\Requests\UpdateResellerRequest;
+use App\Http\Resources\ResellerResource;
 use App\Models\Reseller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResellerController extends Controller
 {
@@ -13,7 +16,7 @@ class ResellerController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.index-reseller');
     }
 
     /**
@@ -35,9 +38,52 @@ class ResellerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Reseller $reseller)
+    public function show(Request $request)
     {
-        //
+        if ($request->ajax() || $request->wantsJson()) {
+            $reseller = Reseller::join('users', 'resellers.user_id', 'users.id')
+                ->select('resellers.id as id', 'nama', 'email', 'no_hp', 'alamat_detail', 'status')->get();
+
+
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $reseller->where('nama', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%")
+                    ->orWhere('no_hp', 'LIKE', "%$search%")
+                    ->orWhere('alamat_detail', 'LIKE', "%$search%")
+                    ->orWhere('status', 'LIKE', "%$search%");
+            }
+
+            return response()->json([
+                'status' => true,
+                'data' => ResellerResource::collection($reseller)
+            ], 201);
+        }
+        return view('manajemen-reseller.data-reseller');
+    }
+
+    public function showPengajuan(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $reseller = Reseller::join('users', 'resellers.user_id', 'users.id')
+                ->select('resellers.id as id', 'nama', 'email', 'no_hp', 'alamat_detail', 'status')->get();
+
+
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $reseller->where('nama', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%")
+                    ->orWhere('no_hp', 'LIKE', "%$search%")
+                    ->orWhere('alamat_detail', 'LIKE', "%$search%")
+                    ->orWhere('status', 'LIKE', "%$search%");
+            }
+
+            return response()->json([
+                'status' => true,
+                'data' => ResellerResource::collection($reseller)
+            ], 201);
+        }
+        return view('manajemen-reseller.pengajuan-reseller');
     }
 
     /**

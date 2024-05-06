@@ -62,4 +62,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    // public function sendPasswordResetNotification($token): void
+    // {
+    //     $url = env('APP_DOMAIN', 'ikankakapmerah.test') . '/reset-password/'.$token . '?email=' . $this->getEmailForPasswordReset();
+    
+    //     $this->notify(new ResetPasswordNotification($url));
+    // }
 }

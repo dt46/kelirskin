@@ -1,5 +1,5 @@
 @extends('layouts.authentication.master')
-@section('title', 'Login-sa-validation')
+@section('title', 'Login Admin')
 
 @section('css')
 
@@ -15,10 +15,8 @@
       <div class="col-12 p-0">
          <div class="login-card">
             <div>
-               <div>
-                  <img class="for-light" src="/assets/images/ikankakap/logo/logo-text.png" alt="looginpage"
-                     style="max-width: 450px;">
-                  <img class="for-dark" src="/assets/images/ikankakap/logo/logo-text.png" alt="looginpage"
+               <div style="text-align: center;">
+                  <img class="for-light" style="text-align: center;" src="/assets/images/kelirskin/logo kelirskin1.png" alt="looginpage"
                      style="max-width: 450px;">
                </div>
 

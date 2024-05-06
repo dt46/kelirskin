@@ -13,12 +13,14 @@ class Reseller extends Model
 
     protected $fillable = [
         "user_id",
+        "nama",
         "no_hp",
         'provinsi',
         'kota',
         'kecamatan',
         'alamat_detail',
-        'foto_ktp'
+        'foto_ktp',
+        'nama_file_original'
     ];
 
     public function user(): BelongsTo

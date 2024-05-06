@@ -51,7 +51,7 @@
                         </div>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('daftar-reseller') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-user') }}"></use>
                             </svg>
@@ -62,7 +62,7 @@
                         </a>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('pengajuan-reseller') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
                             </svg>
@@ -73,7 +73,7 @@
                         </a>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('location') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-maps') }}"></use>
                             </svg>

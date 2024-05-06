@@ -3,6 +3,7 @@
 use App\Http\Controllers\auth\SignInController;
 use App\Http\Controllers\auth\SignUpController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ResellerController;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,7 @@ Route::get('lang/{locale}', function ($locale) {
 
 // ======================================================================
 Route::domain(env('APP_DOMAIN', "kelirskin.test"))->group(function () {
-    Route::redirect('/', '/general-widget');
+    Route::redirect('/', '/signin');
 
     Route::get('/signin', [SignInController::class, 'index'])->middleware('guest')->name('signin');
     Route::post('/signin', [SignInController::class, 'login']);
@@ -45,7 +46,7 @@ Route::domain(env('APP_DOMAIN', "kelirskin.test"))->group(function () {
 
 Route::domain('{subdomain}.' . env('APP_DOMAIN', "kelirskin.test"))->group(function () {
     Route::get('/', function () {
-        return redirect()->route('index');
+        return redirect()->route('signin');
     });
 });
 
@@ -62,12 +63,17 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('IsAdmin')
         ->group(function () {
             Route::get('/dashboard', 'index')->name('index');
+            Route::get('/resellerLocation', 'showIndexLocationReseller')->name('location');
         });
 
-    Route::prefix('widgets')->middleware(['IsReseller'])->group(function () {
-        Route::view('general-widget', 'widgets.general-widget')->name('general-widget');
-        Route::view('chart-widget', 'widgets.chart-widget')->name('chart-widget');
-    });        
+    Route::controller(ResellerController::class)->middleware('IsReseller')->group(function () {
+        Route::get('/dashboard-reseller', 'index')->name('index-reseller');
+    });
+
+    Route::controller(ResellerController::class)->middleware('IsAdmin')->group(function () {
+       Route::get('/daftar-reseller', 'show')->name('daftar-reseller');
+       Route::get('/pengajuan-reseller', 'showPengajuan')->name('pengajuan-reseller');
+    });
 });
 
 
