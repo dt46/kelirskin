@@ -20,6 +20,8 @@ class ResellerResource extends JsonResource
             'email' => $this->email ?? $this->user->email,
             'no_hp' => $this->no_hp,
             'alamat_detail' => $this->alamat_detail,
+            'foto_ktp' => $this->foto_ktp,
+            'nama_file_original' => $this->nama_file_original,
             'status' => $this->status
         ];    }
 }

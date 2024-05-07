@@ -73,6 +73,9 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(ResellerController::class)->middleware('IsAdmin')->group(function () {
        Route::get('/daftar-reseller', 'show')->name('daftar-reseller');
        Route::get('/pengajuan-reseller', 'showPengajuan')->name('pengajuan-reseller');
+       Route::put('/update-status/{reseller}', 'updateStatus');
+       Route::get('/update-data/{reseller}', 'showResellerId');
+       Route::put('/update-data/{reseller}', 'update');
     });
 });
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateResellerRequest extends FormRequest
+class UpdateResellerStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,7 @@ class UpdateResellerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'no_hp' => 'required|string',
-            'alamat_detail' => 'required|string',
             'status' => 'required|boolean',
-            // Add other validation rules if needed
         ];
     }
 }

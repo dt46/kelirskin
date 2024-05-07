@@ -108,7 +108,7 @@ $(document).ready(function () {
         var bg = $(this).attr("data-attr");
         $(".sidebar-wrapper").attr("class", "sidebar-wrapper " + bg);
     });
-
+    
     $(".sidebar-type li").on("click", function () {
         $("body").append("");
         console.log("test");

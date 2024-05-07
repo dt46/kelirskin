@@ -65,9 +65,6 @@ class SignUpController extends Controller
             $alamat_detail = $req['kota'];
 
             $client = new Client();
-            // $response = $client->get('https://api.openweathermap.org/data/2.5/weather', [
-            //     'query' => ['q' => $alamat_detail, 'APPID' => 'd0767a57f3f3e2868852fd0de169b817']
-            // ]);
             $response = $client->get('https://api.openweathermap.org/data/2.5/weather', [
                 'query' => ['q' => $alamat_detail, 'APPID' => 'd0767a57f3f3e2868852fd0de169b817']
             ]);
