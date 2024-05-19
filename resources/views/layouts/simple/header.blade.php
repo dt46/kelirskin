@@ -25,10 +25,13 @@
     </div>
     <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
       <ul class="nav-menus">
+      @if (auth()->user()->role->name == "reseller")
+      <button class="badge {{ auth()->user()->reseller->status ? 'bg-success' : 'btn-danger' }}" disabled>{{ auth()->user()->reseller->status ? 'Aktif' : 'Nonaktif' }}</button>
+      @endif
         <li class="profile-nav onhover-dropdown pe-0 py-0">
-          <div class="media profile-media">
+          <div class="media profile-media" style="align-items: center;">
             {{-- <img class="b-r-10" src="/assets/images/dashboard/profile.png" alt=""> --}}
-            <div class="media-body" style="color: white;"><span>{{ auth()->user()->name }}</span>
+            <div class="media-body" style="color: white; margin-left: 10px;"><span>{{ auth()->user()->name }}</span>
               <p class="mb-0 font-roboto" style="color: white;">{{ auth()->user()->role->name }} <i class="middle fa fa-angle-down"></i></p>
             </div>
           </div>

@@ -13,33 +13,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ResellerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('dashboard.index-reseller');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreResellerRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Request $request)
     {
         if ($request->ajax() || $request->wantsJson()) {
@@ -106,19 +84,14 @@ class ResellerController extends Controller
         return response()->json(['status' => false,], 401);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateResellerRequest $request, Reseller $reseller)
     {
         if ($request->ajax() || $request->wantsJson()) {
             $request->validated();
     
-            // Update the Reseller data
             $reseller->no_hp = $request->no_hp;
             $reseller->alamat_detail = $request->alamat_detail;
             $reseller->status = $request->status;
-            // Update other fields if needed
     
             $reseller->save();
     
@@ -131,9 +104,6 @@ class ResellerController extends Controller
         return response()->json(['status' => false], 401);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Reseller $reseller)
     {
         //
