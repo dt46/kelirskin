@@ -3,6 +3,7 @@
 use App\Http\Controllers\auth\SignInController;
 use App\Http\Controllers\auth\SignUpController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ResellerController;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Artisan;
@@ -76,6 +77,11 @@ Route::middleware(['auth'])->group(function () {
        Route::put('/update-status/{reseller}', 'updateStatus');
        Route::get('/update-data/{reseller}', 'showResellerId');
        Route::put('/update-data/{reseller}', 'update');
+    });
+
+    Route::controller(ProductController::class)->middleware('IsAdmin')->group(function () {
+        Route::get('/daftar-produk', 'index')->name('daftar-produk');
+        Route::get('/tambah-produk', 'showTambahProduk')->name('tambah-produk');
     });
 });
 

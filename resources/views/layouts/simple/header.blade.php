@@ -25,6 +25,11 @@
     </div>
     <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
       <ul class="nav-menus">
+      @if(auth()->user()->role->name == "reseller" && auth()->user()->reseller && auth()->user()->reseller->status == true)
+          <button class="badge bg-success" disabled>Aktif</button>
+      @elseif(auth()->user()->role->name == "reseller" && auth()->user()->reseller && auth()->user()->reseller->status == false)
+          <button class="badge bg-danger" disabled>Nonaktif</button>
+      @endif
         <li class="profile-nav onhover-dropdown pe-0 py-0">
           <div class="media profile-media">
             {{-- <img class="b-r-10" src="/assets/images/dashboard/profile.png" alt=""> --}}

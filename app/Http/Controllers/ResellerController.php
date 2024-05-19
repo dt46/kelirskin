@@ -114,11 +114,9 @@ class ResellerController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $request->validated();
     
-            // Update the Reseller data
             $reseller->no_hp = $request->no_hp;
             $reseller->alamat_detail = $request->alamat_detail;
             $reseller->status = $request->status;
-            // Update other fields if needed
     
             $reseller->save();
     

@@ -35,8 +35,6 @@ class SignUpController extends Controller
             if (!$role) {
                 throw new \Exception('Role reseller tidak ditemukan.');
             }
-            info('Role ID: ' . $role->id);
-    
             $user = new User();
             $user->role_id = $role->id; // Menggunakan nilai ID yang diambil dari database
             $user->name = explode('@', $req['email'])[0];
