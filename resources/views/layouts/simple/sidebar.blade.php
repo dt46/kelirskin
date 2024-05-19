@@ -89,7 +89,7 @@
                         </div>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('daftar-produk') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>
                             </svg>
@@ -100,7 +100,7 @@
                         </a>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('tambah-produk') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
                             </svg>

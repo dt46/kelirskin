@@ -1,4 +1,3 @@
-{{-- location.blade.php --}}
 @extends('layouts.simple.master')
 
 @section('title', 'Titik Sebar Reseller')
@@ -59,31 +58,49 @@
     <script src="{{ asset('assets/js/leaflet/leaflet.js') }}"></script>    
     <script>
         var geojsonData = {!! $geojson !!};
-        console.log(geojsonData); // Check the GeoJSON structure in the console
+        var map = L.map('map').setView([-6.200000, 106.816666], 10); 
 
-        // Inisialisasi peta
-        var map = L.map('map').setView([-6.200000, 106.816666], 10); // Koordinat dan zoom level
-
-        // Tambahkan tile layer ke peta
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Tambahkan GeoJSON ke peta
-        L.geoJSON(geojsonData, {
+        var geoJsonLayer = L.geoJSON(geojsonData, {
             pointToLayer: function (feature, latlng) {
                 var marker = L.marker(latlng);
-        
-                // Tambahkan pop-up dengan atribut GeoJSON
                 var popupContent = '';
                 for (var key in feature.properties) {
                     popupContent += key + ': ' + feature.properties[key] + '<br>';
                 }
                 marker.bindPopup(popupContent);
-                
-                return marker;            
+                return marker;
             }
         }).addTo(map);
+
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var matchedFeatures = [];
+
+            geoJsonLayer.eachLayer(function(layer) {
+                var properties = layer.feature.properties;
+                for (var key in properties) {
+                    if (properties[key].toString().toLowerCase().includes(searchInput)) {
+                        matchedFeatures.push(layer);
+                        break;
+                    }
+                }
+            });
+
+            if (matchedFeatures.length > 0) {
+                var group = new L.featureGroup(matchedFeatures);
+                map.fitBounds(group.getBounds());
+                matchedFeatures.forEach(function(layer) {
+                    layer.openPopup();
+                });
+            } else {
+                alert('No matches found');
+            }
+        });
     </script>
 @endsection

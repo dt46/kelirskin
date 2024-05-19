@@ -7,29 +7,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Reseller extends Model
+class Product extends Model
 {
     use HasFactory, HasUuids;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        "user_id",
-        "nama",
-        "no_hp",
-        'provinsi',
-        'kota',
-        'kecamatan',
-        'alamat_detail',
-        'foto_ktp',
-        'nama_file_original'
+        'id_admin',
+        'fotoProduk',
+        'nama_foto_original',
+        'namaProduk',
+        'hargaProduk',
+        'stokProduk',
+        'beratProduk',
+        'deskripsiProduk',
+        'kategoriProduk',
     ];
 
-    public function user(): BelongsTo
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class);
     }
 }
