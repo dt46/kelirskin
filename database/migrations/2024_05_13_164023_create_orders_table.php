@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->unique();
-            $table->foreignUuid('id_cart')->unique();
+            $table->foreignUuid('id_reseller');
             $table->string('metode_pembayaran');
             $table->integer('biaya_layananAplikasi');
             $table->integer('ongkos_kirim');
             $table->string('bukti_pembayaran');
             $table->string('nama_file_original');
+            $table->string('no_resi')->nullable();
+            $table->string('status')->default('verifikasi');
+            $table->timestamps('tanggal');
             $table->timestamps();
         });
     }
