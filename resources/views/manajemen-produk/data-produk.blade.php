@@ -77,28 +77,27 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Daftar Produk</h5>
-                </div>
-                <div class="card-body"> 
-                    <div class="d-flex justify-content-between mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>Daftar Produk</h5>
                         <div>
-                            <input type="text" class="form-control form-control-sm" id="search" placeholder="Search">
-                        </div>
-                        <div>
-                            <button class="btn btn-sm btn-info px-3" style="color: white;" id="ubah-data-agen" type="button">Ubah Data
+                            <button class="btn btn-sm btn-info px-3" style="color: white;" id="ubah-data-produk" type="button">Ubah Data
                             </button>
-                            <button class="btn btn-sm btn-danger px-3" id="btn-verify" type="button">Hapus Data
+                            <button class="btn btn-sm btn-danger px-3" id="hapus-data-produk" type="button">Hapus Data
                             </button>
                         </div>
                     </div>
-                    <table id="tabel-daftar-reseller" class="nowrap table table-striped table-bordered border-secondary">
+                </div>
+                <div class="card-body">
+                    <table id="tabel-daftar-produk" class="nowrap table table-striped table-bordered border-secondary">
                         <thead>
                             <tr>
                                 <th></th>
                                 <th>Nama Produk</th>
                                 <th>Harga</th>
-                                <th>Varian</th>
-                                <th>Harga</th>
+                                <th>Stok</th>
+                                <th>Berat</th>
+                                <th>Kategori Produk</th>
+                                <th>Deskripsi Produk</th>
                             </tr>
                         </thead>
                     </table>
@@ -108,55 +107,61 @@
     </div>
 </div>
 
-{{-- Edit Data --}}
-<div class="modal fade bd-example-modal-lg ubah-data-agen" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<!-- Edit Data Produk Modal -->
+<div class="modal fade bd-example-modal-lg ubah-data-produk" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Data User Reseller</h4>
+                <h4 class="modal-title" id="editProductModalLabel">Edit Data Produk</h4>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="form-agen" action="" method="post">
+                <form id="form-produk" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row">
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <label class="col-form-label">Nama Pengguna</label>
-                                <input class="form-control" type="text" id="nama" readonly disabled>
+                                <label class="col-form-label">Nama Produk</label>
+                                <input class="form-control" type="text" name="namaProduk" id="namaProduk" required>
                             </div>
                             <div class="mb-3">
-                                <label class="col-form-label">Email</label>
-                                <input class="form-control" type="email" id="email" readonly disabled>
+                                <label class="col-form-label">Harga Produk (Rp)</label>
+                                <input class="form-control" type="number" name="hargaProduk" id="hargaProduk" required>
                             </div>
                             <div class="mb-3">
-                                <label class="col-form-label">No WhatsApp</label>
-                                <input class="form-control" type="number" name="no_hp" id="no_hp" required>
+                                <label class="col-form-label">Stok Produk</label>
+                                <input class="form-control" type="number" name="stokProduk" id="stokProduk" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Berat Produk (gram)</label>
+                                <input class="form-control" type="number" name="beratProduk" id="beratProduk" required>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <label class="col-form-label">Alamat</label>
-                                <input class="form-control" type="text" name="alamat_detail" id="alamat_detail" required>
+                                <label class="col-form-label">Kategori Produk</label>
+                                <input class="form-control" type="text" name="kategoriProduk" id="kategoriProduk" required>
                             </div>
                             <div class="mb-3">
-                                <label class="col-form-label">Status</label>
-                                <select class="form-control form-select" name="status" id="status" required>
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Tidak Aktif</option>
-                                </select>
+                                <label class="col-form-label">Deskripsi Produk</label>
+                                <textarea class="form-control" name="deskripsiProduk" id="deskripsiProduk" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="col-form-label">Foto Produk</label>
+                                <input class="form-control" type="file" name="fotoProduk" id="fotoProduk">
+                                <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah foto.</small>
+                            </div>
+                            <div class="mb-3">
+                                <img id="preview-fotoProduk" src="" alt="Foto Produk" width="100">
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="batal-agen"
-                    data-bs-dismiss="modal">Batalkan</button>
-                <button type="button" id="simpan-agen"
-                    class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batalkan</button>
+                <button type="button" id="simpan-produk" class="btn btn-primary">Simpan</button>
             </div>
         </div>
     </div>
@@ -180,14 +185,14 @@
 
 <script>
     (function(){
-        const tableReseller = new DataTable('#tabel-daftar-reseller', {
+        const tableProducts = new DataTable('#tabel-daftar-produk', {
             fixedColumns: true,
             scrollX: true,
             dom: 'Bfrtip',
-            searching: false, 
+            searching: true,
             buttons: [],
             ajax: {
-                url: '/daftar-reseller',
+                url: '/daftar-produk',
                 type: 'GET',
                 dataSrc: function (json) {
                     return json.data;
@@ -201,21 +206,44 @@
                     },
                     className: 'text-center'
                 },
-                { data: 'nama' },
-                { data: 'email' },
-                { data: 'no_hp' },
-                { data: 'alamat_detail' },
-                { 
-                    data: 'status',
+                {
+                    data: null,
                     render: function (data, type, row) {
-                        if (data == 'true' || data == 1) {
-                            return '<button class="badge bg-success" disabled>Aktif</button>';
-                        } else {
-                            return '<button class="badge btn-danger" disabled>Nonaktif</button>';
-                        }
+                        return `
+                            <div class="d-flex align-items-center">
+                                <img src="${row.fotoProduk}" alt="${row.namaProduk}" width="50" class="me-2">
+                                <span>${row.namaProduk}</span>
+                            </div>
+                        `;
                     },
                     className: 'text-center'
                 },
+                {
+                    data: 'hargaProduk',
+                    render: function (data) {
+                        return `Rp ${data}`;
+                    },
+                    className: 'text-center'
+                },
+                {
+                    data: 'stokProduk',
+                    className: 'text-center'
+                },
+                {
+                    data: 'beratProduk',
+                    render: function (data) {
+                        return `${data} gram`;
+                    },
+                    className: 'text-center'
+                },
+                {
+                    data: 'kategoriProduk',
+                    className: 'text-center'
+                },
+                {
+                    data: 'deskripsiProduk',
+                    className: 'text-center'
+                }
             ],
             columnDefs: [
                 {
@@ -224,50 +252,42 @@
             ]
         });
 
-
-        $('#search').on('keyup', function () {
-            tableReseller.search(this.value).draw();
-        });
-
-        tableReseller.on('click', 'tbody tr', (e) => {
+        tableProducts.on('click', 'tbody tr', (e) => {
             let classList = e.currentTarget.classList;
 
             if (classList.contains('selected')) {
                 classList.remove('selected');
             }
             else {
-                tableReseller.rows('.selected').nodes().each((row) => row.classList.remove('selected'));
+                tableProducts.rows('.selected').nodes().each((row) => row.classList.remove('selected'));
                 classList.add('selected');
             }
         });
 
-        const modalUbahAgen = new bootstrap.Modal(document.querySelector('.ubah-data-agen'), {
+        const modalUbahProduk = new bootstrap.Modal(document.querySelector('.ubah-data-produk'), {
             keyboard: false
         });
-        $('button#ubah-data-agen').on('click', function(){
-            const idAgen = tableReseller.row('.selected').id();
-            idAgen ? modalUbahAgen.show() : modalUbahAgen.hide();
+        $('button#ubah-data-produk').on('click', function(){
+            const idProduk = tableProducts.row('.selected').id();
+            idProduk ? modalUbahProduk.show() : modalUbahProduk.hide();
         });
-        $('.ubah-data-agen').on('shown.bs.modal', function() {
-            idAgen = tableReseller.row('.selected').data().id;
+        $('.ubah-data-produk').on('shown.bs.modal', function() {
+            idProduk = tableProducts.row('.selected').data().id;
             $.ajax({
-                url: '/update-data/' + idAgen,
+                url: '/update-data-produk/' + idProduk,
                 method: 'GET',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response){
                     data = response.data;
-                    $('#id').val(data.id);
-                    $('#nama').val(data.nama);
-                    $('#email').val(data.email);
-                    $('#no_hp').val(data.no_hp);
-                    $('#alamat_detail').val(data.alamat_detail);
-                    if (data.status) {
-                        $('#status').val("1"); 
-                    } else {
-                        $('#status').val("0");
-                    }
+                    $('#namaProduk').val(data.namaProduk);
+                    $('#hargaProduk').val(data.hargaProduk);
+                    $('#stokProduk').val(data.stokProduk);
+                    $('#beratProduk').val(data.beratProduk);
+                    $('#kategoriProduk').val(data.kategoriProduk);
+                    $('#deskripsiProduk').val(data.deskripsiProduk);
+                    $('#preview-fotoProduk').attr('src', data.fotoProduk);
                 },
                 error: function(error){
                     console.error(error);
@@ -278,24 +298,20 @@
                 $(buttonsSelector).prop('disabled', disabled);
             }
 
-            // Disable submit ketika tidak ada perubahan
-            toggleStatusBtn(true, '#simpan-agen');
+            toggleStatusBtn(true, '#simpan-produk');
 
-            // Enable submit ketika ada perubahan
             $(".form-control").on('change input', function() {
-                toggleStatusBtn(false, "#simpan-agen")
+                toggleStatusBtn(false, "#simpan-produk")
             });
 
-            // Submit form agen ketik klik simpan
-            $('#simpan-agen').off('click').on('click', function(){
-                $('#form-agen').submit();
+            $('#simpan-produk').off('click').on('click', function(){
+                $('#form-produk').submit();
             });
 
-            // Handle submit form agen
-            $('#form-agen').off('submit').on('submit', function(e){
+            $('#form-produk').off('submit').on('submit', function(e){
                 e.preventDefault();
 
-                toggleStatusBtn(true, '#batal-agen, #simpan-agen');
+                toggleStatusBtn(true, '#batal-produk, #simpan-produk');
 
                 let formData = new FormData($(this)[0]);
                 let plainFormData = {};
@@ -305,7 +321,7 @@
                 });
 
                 $.ajax({
-                    url: '/update-data/' + idAgen,
+                    url: '/update-data-produk/' + idProduk,
                     method: 'PUT',
                     data: JSON.stringify(plainFormData),
                     contentType: 'application/json',
@@ -313,10 +329,10 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
-                        $('.ubah-data-agen').modal('hide');
+                        $('.ubah-data-produk').modal('hide');
 
                         let _msgTitle = response.status ? 'Berhasil' : 'Gagal';
-                            let _msg = response.status ? 'Data Reseller Berhasil Diperbarui' : 'Gagal memperbarui data, terdapat kesalahan sistem.';
+                            let _msg = response.status ? 'Data Produk Berhasil Diperbarui' : 'Gagal memperbarui data, terdapat kesalahan sistem.';
                             let _icon = response.status ? 'success' : 'error';
 
                             Swal.fire({
@@ -328,16 +344,79 @@
                                 timer: 2000
                             });
 
-                        tableReseller.ajax.reload();
+                        tableProducts.ajax.reload();
                     },
                     error: function(error) {
                         console.log(error);
                     }
                 }).done(function(){
-                    toggleStatusBtn(false, '#batal-agen, #simpan-agen');
+                    toggleStatusBtn(false, '#batal-produk, #simpan-produk');
                 });
 
             });
+        });
+        $('#hapus-data-produk').on('click', function() {
+            const selectedRows = tableProducts.rows('.selected').data();
+            if (selectedRows.length === 0) {
+                Swal.fire({
+                    title: 'Tidak Ada Produk yang Dipilih',
+                    text: 'Silakan pilih produk yang ingin dihapus.',
+                    icon: 'warning',
+                    timer: 2000
+                });
+            } else {
+                Swal.fire({
+                    title: 'Anda yakin ingin menghapus produk yang dipilih?',
+                    text: 'Tindakan ini tidak dapat dibatalkan!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const idProduk = selectedRows.map(row => row.id);
+                        $.each(idProduk, function(index, id) {
+                            $.ajax({
+                                url: '/delete-produk/'  + id,
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(response) {
+                                    if (response.status) {
+                                        Swal.fire({
+                                            title: 'Berhasil',
+                                            text: 'Produk berhasil dihapus.',
+                                            icon: 'success',
+                                            timer: 2000
+                                        }).then(() => {
+                                            tableProducts.ajax.reload();
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Gagal',
+                                            text: 'Terjadi kesalahan saat menghapus produk.',
+                                            icon: 'error',
+                                            timer: 2000
+                                        });
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(xhr.responseText);
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Terjadi kesalahan saat menghapus produk.',
+                                        icon: 'error',
+                                        timer: 2000
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
+            }
         });
     })();
 </script>

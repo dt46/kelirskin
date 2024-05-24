@@ -21,6 +21,7 @@ class Order extends Model
         'metode_pembayaran',
         'biaya_layananAplikasi',
         'ongkos_kirim',
+        'total_harga',
         'bukti_pembayaran',
         'nama_file_original',
         'no_resi',
