@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('nama_file_original');
             $table->string('no_resi')->nullable();
             $table->string('status')->default('verifikasi');
-            $table->timestamps('tanggal');
+            $table->timestamp('tanggal');
             $table->timestamps();
         });
     }
