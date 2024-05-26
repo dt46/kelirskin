@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     nginx \
+    libpq-dev \
     && docker-php-ext-install zip pdo_pgsql \
     && docker-php-ext-enable pdo_pgsql
 
