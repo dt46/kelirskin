@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
-    nginx \
     libpq-dev \
     && docker-php-ext-install zip pdo_pgsql \
     && docker-php-ext-enable pdo_pgsql
@@ -27,6 +26,6 @@ COPY --from=composer /app/ /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html/storage
 
-COPY default.conf /etc/nginx/sites-available/default
+EXPOSE 9000
 
-CMD service nginx start && php-fpm
+CMD ["php-fpm"]

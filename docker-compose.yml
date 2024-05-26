@@ -1,7 +1,9 @@
 version: '3'
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-php
     restart: always
     environment:
       - APP_DOMAIN=kelirskin.pegelinux.my.id
@@ -13,9 +15,18 @@ services:
       - DB_PASSWORD=AkuMicroIT
     depends_on:
       - db
-    # command: bash -c "service nginx start && php-fpm"
+
+  nginx:
+    build: 
+      context: .
+      dockerfile: Dockerfile-nginx
+    restart: always
     ports:
       - 9000:80
+    depends_on:
+      - app
+
+
 
   db:
     image: postgres:13.3
