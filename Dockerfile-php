@@ -23,7 +23,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable pdo_pgsql
 
 COPY --from=vite-builder /app/public/dist /var/www/html/public/dist
+# COPY --from=vite-builder /app/public/build /var/www/html/public/build
 COPY --from=vite-builder /app/public/build /var/www/html/public/build
+COPY --from=vite-builder /app/public/build/.vite/manifest.json /var/www/html/public/build/manifest.json
 
 COPY --from=composer /app/ /var/www/html/
 
