@@ -17,8 +17,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     nginx \
-    && docker-php-ext-install zip pdo_mysql \
-    && docker-php-ext-enable pdo_mysql
+    && docker-php-ext-install zip pdo_pgsql \
+    && docker-php-ext-enable pdo_pgsql
 
 COPY --from=vite-builder /app/public/dist /var/www/html/public/dist
 
