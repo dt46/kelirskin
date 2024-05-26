@@ -16,7 +16,7 @@ services:
       - db
     command: service nginx start && php-fpm
     ports:
-      - 8080:80
+      - 9000:80
 
     db:
       image: postgres:13.3
