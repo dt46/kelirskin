@@ -4,31 +4,31 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-RUN ls /app/public/
+RUN ls /app/public/dist
 # Add this line to check the contents of /app/public/dist
 
-# FROM composer:2 AS composer
-# WORKDIR /app
-# COPY . .  
-# RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+FROM composer:2 AS composer
+WORKDIR /app
+COPY . .  
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# FROM php:8.1-fpm
-# WORKDIR /var/www/html
-# RUN apt-get update && apt-get install -y \
-#     libzip-dev \
-#     zip \
-#     unzip \
-#     libpq-dev \
-#     && docker-php-ext-install zip pdo_pgsql \
-#     && docker-php-ext-enable pdo_pgsql
+FROM php:8.1-fpm
+WORKDIR /var/www/html
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    zip \
+    unzip \
+    libpq-dev \
+    && docker-php-ext-install zip pdo_pgsql \
+    && docker-php-ext-enable pdo_pgsql
 
-# COPY --from=vite-builder /app/public/dist /var/www/html/public/dist
+COPY --from=vite-builder /app/public/dist /var/www/html/public/dist
 # COPY --from=vite-builder /app/public/build /var/www/html/public/build
 
-# COPY --from=composer /app/ /var/www/html/
+COPY --from=composer /app/ /var/www/html/
 
-# RUN chown -R www-data:www-data /var/www/html/storage
+RUN chown -R www-data:www-data /var/www/html/storage
 
-# EXPOSE 9000
+EXPOSE 9000
 
-# CMD ["php-fpm"]
+CMD ["php-fpm"]
