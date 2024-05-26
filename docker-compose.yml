@@ -5,17 +5,18 @@ services:
     restart: always
     volumes:
       - ./:/var/www/html
+      - ./vendor:/var/www/html/vendor
     environment:
       - APP_DOMAIN=kelirskin.pegelinux.my.id
       - DB_CONNECTION=pgsql
       - DB_HOST=db
       - DB_PORT=5432
       - DB_DATABASE=akumicroit
-      - DB_USERNAME=root
+      - DB_USERNAME=rootdk
       - DB_PASSWORD=AkuMicroIT
     depends_on:
       - db
-    # command: service nginx start && php-fpm
+    command: service nginx start && php-fpm
     ports:
       - 9000:80
 
