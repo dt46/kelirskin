@@ -4,6 +4,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build
+RUN ls /app/public/dist # Add this line to check the contents of /app/public/dist
 
 FROM composer:2 AS composer
 WORKDIR /app
@@ -21,7 +22,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable pdo_pgsql
 
 COPY --from=vite-builder /app/public/dist /var/www/html/public/dist
+RUN ls /var/www/html/public/dist 
+# Add this line to check the contents of /var/www/html/public/dist
 COPY --from=vite-builder /app/public/dist /var/www/html/public/build
+RUN ls /var/www/html/public/build 
+# Add this line to check the contents of /var/www/html/public/build
 
 COPY --from=composer /app/ /var/www/html/
 
