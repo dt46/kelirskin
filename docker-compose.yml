@@ -19,17 +19,17 @@ services:
     ports:
       - 9000:80
 
-    db:
-      image: postgres:13.3
-      restart: always
-      ports:
-        - 5439:5432
-      environment:
-        POSTGRES_USER: root
-        POSTGRES_PASSWORD: AkuMicroIT
-        POSTGRES_DB: akumicroit
-      volumes:
-        - postgres-data:/var/lib/postgresql/data
+  db:
+    image: postgres:13.3
+    restart: always
+    ports:
+      - 5439:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: AkuMicroIT
+      POSTGRES_DB: akumicroit
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
 volumes:
   postgres-data:
