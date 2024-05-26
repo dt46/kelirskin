@@ -4,6 +4,8 @@ services:
     build: .
     restart: always
     volumes:
+      - ./:/var/www/html
+      - ./vendor:/var/www/html/vendor
     environment:
       - APP_DOMAIN=kelirskin.pegelinux.my.id
       - DB_CONNECTION=pgsql
