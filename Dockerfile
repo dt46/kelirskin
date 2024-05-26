@@ -28,4 +28,4 @@ RUN chown -R www-data:www-data /var/www/html/storage
 
 COPY default.conf /etc/nginx/sites-available/default
 
-CMD service nginx start && php-fpm
+# CMD service nginx start && php-fpm
