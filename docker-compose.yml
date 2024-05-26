@@ -3,31 +3,21 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile-php
+      dockerfile: Dockerfile
     restart: always
+    ports:
+      - 8080:80
     environment:
-      - APP_DOMAIN=kelirskin.pegelinux.my.id
+      - APP_DOMAIN=https://kelirskin.pegelinux.my.id
       - DB_CONNECTION=pgsql
       - DB_HOST=db
       - DB_PORT=5432
       - DB_DATABASE=akumicroit
       - DB_USERNAME=root
       - DB_PASSWORD=AkuMicroIT
+      - APP_KEY=base64:VNCCQurIbCgiUzMjEdESJ1FkpY5CAmCvKz/41td/2EQ=
     depends_on:
       - db
-
-  nginx:
-    build: 
-      context: .
-      dockerfile: Dockerfile-nginx
-    restart: always
-    ports:
-      - 9000:80
-    depends_on:
-      - app
-
-
-
   db:
     image: postgres:13.3
     restart: always
