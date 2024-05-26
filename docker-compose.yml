@@ -16,6 +16,7 @@ services:
       - DB_USERNAME=root
       - DB_PASSWORD=AkuMicroIT
       - APP_KEY=base64:VNCCQurIbCgiUzMjEdESJ1FkpY5CAmCvKz/41td/2EQ=
+      - APP_URL=https://kelirskin.pegelinux.my.id
     depends_on:
       - db
   db:
