@@ -1,4 +1,4 @@
-FROM node:16 AS vite-builder
+FROM node:20 AS vite-builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
