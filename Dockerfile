@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copy Vite build output
 COPY --from=vite-builder /app/public/dist /var/www/html/public/dist
-COPY --from=vite-builder /app/public/build/manifest.json /var/www/html/public/build/manifest.json
+COPY --from=vite-builder /app/public/build /var/www/html/public/build
 
 # Copy Composer dependencies
 COPY --from=composer /app/ /var/www/html/
