@@ -15,7 +15,7 @@ services:
       - DB_PASSWORD=AkuMicroIT
     depends_on:
       - db
-    command: service nginx start && php-fpm
+    # command: service nginx start && php-fpm
     ports:
       - 9000:80
 
