@@ -8,7 +8,7 @@ services:
     ports:
       - 9000:80
     environment:
-      - APP_DOMAIN=https://kelirskin.pegelinux.my.id
+      - APP_DOMAIN=kelirskin.pegelinux.my.id
       - DB_CONNECTION=pgsql
       - DB_HOST=db
       - DB_PORT=5432
