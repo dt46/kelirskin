@@ -82,6 +82,10 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(ProductController::class)->middleware('IsAdmin')->group(function () {
         Route::get('/daftar-produk', 'index')->name('daftar-produk');
         Route::get('/tambah-produk', 'showTambahProduk')->name('tambah-produk');
+        Route::post('/tambah-produk', 'store')->name('tambah-produk');
+        Route::get('/update-data-produk/{product}', 'showProdukId');
+        Route::put('/update-data-produk/{product}', 'update');
+        Route::delete('/delete-produk/{id}', 'destroy');
     });
 });
 

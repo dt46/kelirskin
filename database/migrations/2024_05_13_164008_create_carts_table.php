@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignUuid('id_produk');
             $table->integer('jumlah_produk');
             $table->integer('total_harga');
-            $table->boolean('status_cart');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
