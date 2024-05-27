@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Reseller;
 use App\Models\Role;
 use App\Models\User;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+
 
 use function Laravel\Prompts\error;
 
@@ -36,10 +32,10 @@ class SignUpController extends Controller
                 throw new \Exception('Role reseller tidak ditemukan.');
             }
             $user = new User();
-            $user->role_id = $role->id; // Menggunakan nilai ID yang diambil dari database
+            $user->role_id = $role->id; 
             $user->name = explode('@', $req['email'])[0];
             $user->email = $req['email'];
-            $user->password = Hash::make($req['password']); // Pastikan untuk menggunakan password dari request
+            $user->password = Hash::make($req['password']); 
             $user->save();
     
             $reseller = new Reseller;
@@ -51,13 +47,12 @@ class SignUpController extends Controller
             $reseller->kecamatan = $req['kecamatan'];
             $reseller->alamat_detail = $req['alamat_detail'];
             
-            // Proses upload file foto_ktp
             if ($request->hasFile('foto_ktp')) {
                 $file = $request->file('foto_ktp');
                 $originalName = $file->getClientOriginalName();
                 $path = $file->store('public/ktp_images');
                 $reseller->foto_ktp = str_replace('public', 'storage', $path);
-                $reseller->nama_file_original = $originalName; // Menyimpan nama file asli
+                $reseller->nama_file_original = $originalName;
             }
             
             $alamat_detail = $req['kota'];
@@ -69,7 +64,6 @@ class SignUpController extends Controller
             $body = json_decode($response->getBody(), true);
             $coordinates = $body['coord'];
 
-            // Membuat struktur GeoJSON
             $geoJSON = [
                 'type' => 'Feature',
                 'geometry' => [
@@ -81,11 +75,9 @@ class SignUpController extends Controller
                     'provinsi' => $req['provinsi'],
                     'kota' => $req['kota'],
                     'kecamatan' => $req['kecamatan'],
-                    // Tambahkan properti lain jika diperlukan
                 ]
             ];
             
-            // Simpan data GeoJSON sebagai string JSON
             $reseller->lokasi_geojson = json_encode($geoJSON);
 
             $reseller->save();
