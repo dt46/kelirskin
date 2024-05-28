@@ -11,7 +11,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'total_harga' => 'required',
+            'ongkos_kirim' => 'required',
+            'bukti_pembayaran' => 'required',
+            'biaya_layananAplikasi' => 'required',
+            'tanggal' => 'required',
+            'metode_pembayaran' => 'required', // Tambahkan validasi ini
         ];
     }
 }

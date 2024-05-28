@@ -81,8 +81,14 @@
               <div class="row">
                 <div class="col">
                   <div class="mb-3">
-                    <label for="kategoriProduk">Kategori Produk</label>
-                    <input id="kategoriProduk" name="kategoriProduk" class="form-control" type="text" placeholder="Kategori Produk">
+                      <label for="kategoriProduk">Kategori Produk</label>
+                      <select id="kategoriProduk" name="kategoriProduk" class="form-control">
+                          <option value="" disabled selected>Pilih Kategori Produk</option>
+                          <option value="serum">Serum</option>
+                          <option value="facewash">Face Wash</option>
+                          <option value="facecream">Face Cream</option>
+                          <option value="toner">Toner & Micellar Water</option>
+                      </select>
                   </div>
                 </div>
               </div>

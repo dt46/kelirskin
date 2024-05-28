@@ -162,7 +162,6 @@
 <script>
     (function () {
         $('#btn-update-agen').click(function () {
-            // Mengumpulkan data formulir
             var formData = $('#form-update-agen').serialize();
 
             $.ajax({
@@ -171,9 +170,7 @@
                 data: formData,
                 dataType: 'json',
                 success: function (response) {
-                    // Menangani respons dari server
                     if (response.status) {
-                        // Jika berhasil, tampilkan pesan sukses
                         Swal.fire({
                             title: 'Berhasil',
                             text: response.message,
@@ -182,7 +179,6 @@
                             showConfirmButton: false
                         })
                     } else {
-                        // Jika gagal, tampilkan pesan error
                         Swal.fire({
                             title: 'Gagal',
                             text: response.error,
@@ -193,7 +189,6 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    // Menangani kesalahan AJAX
                     Swal.fire({
                         title: 'Gagal',
                         text: 'Terjadi kesalahan saat mengirim permintaan.',

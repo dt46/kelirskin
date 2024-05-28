@@ -23,5 +23,6 @@ class ResellerResource extends JsonResource
             'foto_ktp' => $this->foto_ktp,
             'nama_file_original' => $this->nama_file_original,
             'status' => $this->status
-        ];    }
+        ];    
+    }
 }

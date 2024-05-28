@@ -33,29 +33,50 @@ class ProductController extends Controller
     public function show(Request $request)
     {
         if ($request->ajax() || $request->wantsJson()) {
+            $products = Product::query();
+        
             if ($request->has('search')) {
                 $searchTerm = $request->input('search');
-                $products = Product::where('namaProduk', 'like', '%' . $searchTerm . '%')->get();
-            } else {
-                $products = Product::all();
+                $products->where('namaProduk', 'like', '%' . $searchTerm . '%');
             }
-
+        
+            if ($request->has('category')) {
+                $categories = $request->input('category');
+                $products->whereIn('kategoriProduk', $categories);
+            }
+        
+            $products = $products->get();
+        
             return response()->json([
                 'status' => true,
                 'data' => ProductResource::collection($products)
             ], 200);
         }
-
+        
+        $products = Product::query();
+        $categories = Product::pluck('kategoriProduk')->unique()->toArray();
+        
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
-            $products = Product::where('namaProduk', 'like', '%' . $searchTerm . '%')->get();
-        } else {
-            $products = Product::all();
+            $products->where('namaProduk', 'like', '%' . $searchTerm . '%');
         }
+        
+        if ($request->has('category')) {
+            $categories = $request->input('category');
+            $products->whereIn('kategoriProduk', $categories);
+        }
+        
+        $products = $products->get();
+        
+        return view('produk.product')->with(compact('products', 'categories'));
+    }    
 
-        return view('produk.product')->with(compact('products'));
+    public function showDetail($id)
+    {
+        $product = Product::findOrFail($id);
+
+        return view('produk.produk-page', compact('product'));
     }
-
 
     /**
      * Show the form for creating a new resource.

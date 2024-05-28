@@ -25,11 +25,7 @@
     .logo-wrapper,
     .logo-icon-wrapper {
         background-color: #AB764E;
-    }
-    .sidebar-wrapper {
-        width: 100%; /* Panjang */
-        height: auto; /* Lebar */
-    }           
+    }        
   </style>
 </head>
 

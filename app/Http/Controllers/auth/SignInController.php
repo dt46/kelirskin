@@ -51,7 +51,7 @@ class SignInController extends Controller
 
             // Redirect based on user role
             if (Auth::user()->role && Auth::user()->role->name == 'reseller') {
-                return redirect()->route('general-widget');
+                return redirect()->route('produk');
             } 
             if (Auth::user()->role && Auth::user()->role->name == 'admin'){
                 return redirect()->route('index');

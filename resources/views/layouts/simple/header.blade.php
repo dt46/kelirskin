@@ -1,18 +1,5 @@
 <div class="page-header" style="background-color: #AB764E;">
   <div class="header-wrapper row m-0">
-    <form class="form-inline search-full col" action="#" method="get">
-      <div class="form-group w-100">
-        <div class="Typeahead Typeahead--twitterUsers">
-          <div class="u-posRelative">
-            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
-              placeholder="Cari sesuatu .." name="q" title="" autofocus>
-            <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span></div><i
-              class="close-search" data-feather="x"></i>
-          </div>
-          <div class="Typeahead-menu"></div>
-        </div>
-      </div>
-    </form>
     <div class="header-logo-wrapper col-auto p-0">
       <div class="logo-wrapper">
         <a href="">
@@ -26,6 +13,11 @@
     <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
       <ul class="nav-menus">
       @if (auth()->user()->role->name == "reseller")
+      <a href="{{ route('keranjang') }}" class="mt-1" style="margin-right: 10px;" >
+        <svg class="fill-icon" style="width: 20px; height: 20px; fill:white;">
+          <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
+        </svg>
+      </a>
       <button class="badge {{ auth()->user()->reseller->status ? 'bg-success' : 'btn-danger' }}" disabled>{{ auth()->user()->reseller->status ? 'Aktif' : 'Nonaktif' }}</button>
       @endif
         <li class="profile-nav onhover-dropdown pe-0 py-0">
