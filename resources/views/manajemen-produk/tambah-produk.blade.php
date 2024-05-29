@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-sm-4">
                   <div class="mb-3">
-                    <label for="beratProduk">Berat Produk (gram)</label>
+                    <label for="beratProduk">Berat Produk (ml)</label>
                     <input id="beratProduk" name="beratProduk" class="form-control" type="text" placeholder="Berat Produk">
                   </div>
                 </div>

@@ -114,7 +114,7 @@
                         Tidak Tersedia
                     @endif
                   </p>
-                  <p>{{ $product->beratProduk }} gram</p>
+                  <p>{{ $product->beratProduk }} ml</p>
                   <div class="product-price" style="color: #AB764E;">Rp{{ $product->hargaProduk }}</div>
                </div>
              </div>

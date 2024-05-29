@@ -29,7 +29,7 @@
           </div>
           <ul class="profile-dropdown onhover-show-div">
             @if (auth()->user()->role->name == "reseller")
-            <li><a href="/profile"><i data-feather="user"></i><span>Akun</span></a></li>
+            <li><a href="{{ route('profile') }}"><i data-feather="user"></i><span>Akun</span></a></li>
             @endif
             {{-- <li><a href="#"><i data-feather="settings"></i><span>Pengaturan</span></a></li> --}}
             <li>

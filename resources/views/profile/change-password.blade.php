@@ -1,5 +1,5 @@
 @extends('layouts.simple.master')
-@section('title', 'Profile')
+@section('title', 'Change Profile')
 
 @section('css')
 @endsection
@@ -41,18 +41,15 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Profile</h3>
+<h3>Change Password</h3>
 @endsection
 
-@section('breadcrumb-items')
-<li class="breadcrumb-item active">Profile</li>
-@endsection
 
 @section('content')
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
-            <h5>Profile</h5>
+            <h5>Change Password</h5>
         </div>
         <div class="card-body">
             <form id="form-update-reseller" class="theme-form" enctype="multipart/form-data" method="POST">
@@ -67,55 +64,27 @@
                             <img src="/assets/images/placeholder.png" alt="Foto Profil" class="square-image">
                             @endif
                         </div>
-                        <label class="col-form-label pt-3" for="foto_profil">Foto Profil</label>
-                        <input class="form-control" id="foto_profil" name="foto_profil" type="file">
                     </div>
                     <div class="col-md-8">
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label" for="email">Email</label>
+                            <h5>Kata Sandi Baru</h5>
+                            <p class="col-md-12">Ubah kata sandi anda dengan yang lebih kuat <br> demi keamanan akun anda.</p>
+                        </div>
+                        <div class="row mb-3">
                             <div class="col-md-8">
-                                <input value="{{ auth()->user()->role->name == 'reseller' ? auth()->user()->email : old('email') }}" class="form-control" id="email" type="email" disabled>
+                                <input class="form-control" id="new-password" type="password" placeholder="Masukkan Kata Sandi Baru">
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label" for="nama">Nama</label>
                             <div class="col-md-8">
-                                <input value="{{ auth()->user()->role->name == 'reseller' ? auth()->user()->reseller->nama : old('nama') }}" class="form-control" id="nama" name="nama" type="text">
+                                <input class="form-control" id="confirm-password" type="password" placeholder="Ketik Ulang Kata Sandi Baru">
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label class="col-md-4 col-form-label" for="no_hp">No Handphone</label>
                             <div class="col-md-8">
-                                <input value="{{ auth()->user()->role->name == 'reseller' ? auth()->user()->reseller->no_hp : old('no_hp') }}" class="form-control" id="no_hp" name="no_hp" type="text">
+                                <button type="button" class="btn custom-button" id="btn-cancel">Batal</button>
+                                <a href="#" class="btn custom-button" id="btn-save-password">Simpan</a>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-md-4 col-form-label" for="provinsi">Provinsi</label>
-                            <div class="col-md-8">
-                                <input value="{{ auth()->user()->role->name == 'reseller' ? auth()->user()->reseller->provinsi : old('provinsi') }}" class="form-control" id="provinsi" name="provinsi" type="text">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-md-4 col-form-label" for="kota">Kota</label>
-                            <div class="col-md-8">
-                                <input value="{{ auth()->user()->role->name == 'reseller' ? auth()->user()->reseller->kota : old('kota') }}" class="form-control" id="kota" name="kota" type="text">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-md-4 col-form-label" for="kecamatan">Kecamatan</label>
-                            <div class="col-md-8">
-                                <input value="{{ auth()->user()->role->name == 'reseller' ? auth()->user()->reseller->kecamatan : old('kecamatan') }}" class="form-control" id="kecamatan" name="kecamatan" type="text">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-md-4 col-form-label" for="alamat_detail">Alamat Detail</label>
-                            <div class="col-md-8">
-                                <input value="{{ auth()->user()->role->name == 'reseller' ? auth()->user()->reseller->alamat_detail : old('alamat_detail') }}" class="form-control" id="alamat_detail" name="alamat_detail" type="text">
-                            </div>
-                        </div>
-                        <div class="card-footer text-end">
-                            <button type="button" class="btn custom-button" id="btn-update-reseller">Update</button>
-                            <a href="{{ route('change-password') }}" class="btn custom-button">Change Password</a>
                         </div>
                     </div>
                 </div>

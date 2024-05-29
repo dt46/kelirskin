@@ -10,6 +10,7 @@ use App\Models\Reseller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ResellerController extends Controller
 {
@@ -102,6 +103,55 @@ class ResellerController extends Controller
         }
     
         return response()->json(['status' => false], 401);
+    }
+
+    public function showProfile(){
+        return view('profile.profile');
+    }
+
+    public function showKataSandi(){
+        return view('profile.change-password');
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            try {
+                $request->validated();
+                $reseller = auth()->user()->reseller;
+                $fotoProdukPath = $reseller->foto_profil;
+                $originalName = $reseller->nama_file_original;
+        
+                if ($request->hasFile('foto_profil')) {
+                    $file = $request->file('foto_profil');
+                    $originalName = $file->getClientOriginalName();
+    
+                    if ($reseller->fotoProduk) {
+                        $oldFilePath = str_replace('storage', 'public', $reseller->foto_profil);
+                        if (Storage::exists($oldFilePath)) {
+                            Storage::delete($oldFilePath);
+                        }
+                    }
+                    $path = $file->store('public/profile_images');
+                    $fotoProdukPath = str_replace('public', 'storage', $path);
+                }
+        
+                $reseller->nama = $request->nama;
+                $reseller->no_hp = $request->no_hp;
+                $reseller->alamat_detail = $request->alamat_detail;
+                
+                if ($request->hasFile('foto_profil')) {
+                    $reseller->foto_profil = $fotoProdukPath;
+                    $reseller->nama_file_original = $originalName;
+                }
+        
+                $reseller->save();
+
+                return response()->json(['message' => 'Data Berhasil Diperbaharui', 'status' => true], 200);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Terjadi Kesalahan' . $e->getMessage(), 'status' => false], 500);
+            }
+        }
     }
 
     public function destroy(Reseller $reseller)

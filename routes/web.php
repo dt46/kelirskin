@@ -112,6 +112,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/payment', 'store');
     });
 
+    Route::controller(ResellerController::class)->middleware('IsReseller')->group(function () {
+        Route::get('/profile', 'showProfile')->name('profile');
+        Route::get('/change-password', 'showKataSandi')->name('change-password');
+    });
+
     Route::controller(OrderController::class)->middleware('AdminOrReseller')->group(function () {
         Route::get('/detail-pesanan/{id}', 'showDetail')->name('detail-pesanan');
         Route::get('/detail-pesanan', 'showTabeldetail')->name('detail-pesanann');
