@@ -123,7 +123,7 @@
                     </li>
                     @else
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="">
+                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('daftar-order-reseller') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>
                             </svg>
@@ -133,17 +133,25 @@
                             <span>Produk Dipesan</span>
                         </a>
                     </li>
-                    <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="{{ route('produk') }}">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-widget') }}"></use>
-                            </svg>
-                            <span>Perpanjang Member</span>
-                        </a>
-                    </li>
+                    @if (auth()->user()->reseller->status == false)
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('produk') }}">
+                                    <svg class="stroke-icon">
+                                        <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>
+                                    </svg>
+                                    <span>Pendaftaran Reseller</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="sidebar-list">
+                                <a class="sidebar-link sidebar-title link-nav" href="{{ route('produk') }}">
+                                    <svg class="stroke-icon">
+                                        <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>
+                                    </svg>
+                                    <span>Pendaftaran Pembelian Produk</span>
+                                </a>
+                            </li>
+                        @endif
                     @endif
                 </ul>
             </div>

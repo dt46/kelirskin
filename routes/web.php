@@ -34,11 +34,15 @@ Route::get('lang/{locale}', function ($locale) {
 
 // ======================================================================
 Route::domain(env('APP_DOMAIN', "kelirskin.test"))->group(function () {
-    Route::redirect('/', '/signin');
+    Route::get('/', function () {
+        return redirect()->route('produk');
+    });
 
-    Route::get('/signin', [SignInController::class, 'index'])->middleware('guest')->name('signin');
-    Route::post('/signin', [SignInController::class, 'login']);
-    Route::post('/signout', [SignInController::class, 'logout']);
+    Route::controller(SignInController::class)->group(function () {
+        Route::get("/signin", 'index')->middleware('guest')->name('signin');
+        Route::post('/signin', 'login');
+        Route::post('/signout', 'logout');
+    });
 
     Route::controller(SignUpController::class)
         ->group(function () {
@@ -46,10 +50,9 @@ Route::domain(env('APP_DOMAIN', "kelirskin.test"))->group(function () {
             Route::post("/signup", 'signUp');
         });
 });
-
 Route::domain('{subdomain}.' . env('APP_DOMAIN', "kelirskin.test"))->group(function () {
     Route::get('/', function () {
-        return redirect()->route('signin');
+        return redirect()->route('index');
     });
 });
 
@@ -92,6 +95,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(OrderController::class)->middleware('IsAdmin')->group(function () {
         Route::get('/daftar-order', 'index')->name('daftar-order');
+        Route::get('/update-status/{order}', 'showOrderId');
+        Route::put('/update-resi/{order}', 'update');   
+    });
+
+    Route::controller(OrderController::class)->middleware('IsReseller')->group(function () {
+        Route::get('/daftar-pesanan', 'indexReseller')->name('daftar-order-reseller');
+        Route::get('/update-status-order/{order}', 'showOrderId');
+        Route::put('/update-status-order/{order}', 'updateStatus');
     });
 
     Route::controller(ProductController::class)->middleware('IsReseller')->group(function () {
@@ -114,7 +125,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(ResellerController::class)->middleware('IsReseller')->group(function () {
         Route::get('/profile', 'showProfile')->name('profile');
+        Route::put('/update-profile-reseller', 'updateProfile');
         Route::get('/change-password', 'showKataSandi')->name('change-password');
+        Route::put('/change-password', 'changePassword');
     });
 
     Route::controller(OrderController::class)->middleware('AdminOrReseller')->group(function () {

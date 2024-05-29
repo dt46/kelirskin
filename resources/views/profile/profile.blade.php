@@ -64,7 +64,7 @@
                             @if(auth()->user()->reseller->foto_profil)
                             <img src="{{ auth()->user()->reseller->foto_profil }}" alt="Foto Profil" class="square-image">
                             @else
-                            <img src="/assets/images/placeholder.png" alt="Foto Profil" class="square-image">
+                            <img src="/assets/images/profil-preview.jpg" alt="Foto Profil" class="square-image">
                             @endif
                         </div>
                         <label class="col-form-label pt-3" for="foto_profil">Foto Profil</label>
@@ -160,6 +160,8 @@
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
+                        }).then(function() {
+                            location.reload();
                         });
                     } else {
                         Swal.fire({
@@ -172,7 +174,6 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(status, xhr, error)
                     Swal.fire({
                         title: 'Gagal',
                         text: 'Terjadi kesalahan saat mengirim permintaan.',

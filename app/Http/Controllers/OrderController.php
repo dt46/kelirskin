@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\Reseller;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -39,28 +40,73 @@ class OrderController extends Controller
     
         return view('manajemen-produk.data-order');
     }
+    public function indexReseller(Request $request)
+    {
+        try {
+            if ($request->ajax() || $request->wantsJson()) {
+                $user = auth()->user()->reseller->id;
+                $resellerData = Order::join('resellers', 'orders.id_reseller', 'resellers.id')
+                    ->select('resellers.nama', 'resellers.alamat_detail', 'orders.no_resi', 'orders.status', 'orders.total_harga', 'orders.id', 'orders.tanggal')
+                    ->where('orders.id_reseller', $user)
+                    ->get();
+    
+                return response()->json([
+                    'status' => true,
+                    'data' => $resellerData
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
+    
+        return view('manajemen-produk.data-order-reseller');
+    }
 
-    public function showDetail($id)
+    public function showDetail(Request $request, $id)
     {
         $order = Order::findOrFail($id);
         $id_reseller = $order->id_reseller;
-        $countCart = Cart::where('id_reseller', $id_reseller)
-                ->whereDate('deleted_at', $order->tanggal)
-                ->count();
-                
-        $totalHarga = Cart::where('id_reseller', $id_reseller)
-                ->whereDate('deleted_at', $order->tanggal)
-                ->sum('total_harga');
         
+        $countCart = Cart::where('id_reseller', $id_reseller)
+            ->whereDate('deleted_at', $order->tanggal)
+            ->count();
+        
+        $totalHarga = Cart::where('id_reseller', $id_reseller)
+            ->whereDate('deleted_at', $order->tanggal)
+            ->sum('total_harga');
+        
+        $reseller = Reseller::findOrFail($id_reseller);
         $data = [
             'countCart' => $countCart,
             'totalHarga' => $totalHarga,
-            'alamat' => Reseller::where('id', $id_reseller)->value('alamat_detail'),
-            'no_hp' => Reseller::where('id', $id_reseller)->value('no_hp'),
+            'alamat' => $reseller->alamat_detail,
+            'no_hp' => $reseller->no_hp,
         ];
-
+        
+        $orderDetails = Order::join('resellers', 'orders.id_reseller', '=', 'resellers.id')
+            ->join('carts', 'resellers.id', '=', 'carts.id_reseller')
+            ->join('products', 'carts.id_produk', '=', 'products.id')
+            ->select('products.id', 'products.namaProduk', 'products.hargaProduk', 'products.fotoProduk', 'carts.total_harga', 'carts.jumlah_produk')
+            ->where('orders.id', $id)
+            ->whereDate('carts.deleted_at', $order->tanggal)
+            ->get();
+        
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => true,
+                'data' => $orderDetails,
+                'summary' => $data,
+            ], 200);
+        }
+    
+        // Jika bukan AJAX, kembalikan ke view dengan data yang diperlukan
         return view('manajemen-produk.detail-pesanan', compact('order') + $data);
     }
+    
+    
 
     public function showTabeldetail(Request $request)
     {
@@ -80,14 +126,7 @@ class OrderController extends Controller
             ], 200);
         }
 
-        return redirect()->route('detail-pesann');
-    }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('manajemen-produk.detail-pesanan');
     }
 
     /**
@@ -153,20 +192,43 @@ class OrderController extends Controller
         }
     }    
 
+    public function showTabelReseller(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $user = $request->user()->reseller->id;
+            $order = Order::join('resellers', 'orders.id_reseller', 'resellers.id')
+                ->join('carts', 'resellers.id', 'carts.id_reseller')
+                ->join('products', 'carts.id_produk', 'products.id')
+                ->select('products.id', 'products.namaProduk', 'products.hargaProduk', 'products.fotoProduk', 'carts.total_harga', 'carts.jumlah_produk')
+                ->whereColumn('carts.id_reseller', 'orders.id_reseller')
+                ->whereDate('carts.deleted_at', DB::raw('orders.tanggal::date'))
+                ->where('orders.id_reseller', $user)
+                ->get();
+    
+            return response()->json([
+                'status' => true,
+                'data' => $order
+            ], 200);
+        }
+
+        return redirect()->route('detail-pesann');
+    }
+
+
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
+    public function showOrderId(Order $order, Request $request)
     {
-        //
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'true',
+                'data' => new OrderResource($order)
+            ], 201);
+        }
+
+        return response()->json(['status' => false,], 401);
     }
 
     /**
@@ -174,7 +236,20 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        if ($request->ajax() || $request->wantsJson()) {
+            $validated = $request->validated();
+
+            $order->no_resi = $validated['no_resi'];
+            $order->status = $validated['status'];
+            $order->save();
+    
+            return response()->json([
+                'status' => true,
+                'data' => new OrderResource($order)
+            ], 201);
+        }
+    
+        return response()->json(['status' => false], 401);
     }
 
     /**

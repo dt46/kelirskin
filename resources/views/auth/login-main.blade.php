@@ -7,6 +7,13 @@
 
 @section('style')
 <link rel="stylesheet" type="text/css" href="/assets/css/vendors/sweetalert2.css">
+<style>
+   .wide-button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+   }
+</style>
 @endsection
 
 @section('content')
@@ -28,12 +35,14 @@
                   @endif
                   <form class="theme-form" method="post" action="/signin">
                      @csrf
-                     <h4>Masuk ke akun anda</h4>
-                     <p>Masukkan email dan password untuk masuk</p>
+                     <center>
+                        <h4>Kelirskin Admin Access</h4>
+                        <p>Selamat datang dan selamat bekerja.</p>
+                     </center>
                      <div class="form-group">
-                        <label class="col-form-label">Email Address</label>
+                        <label class="col-form-label">Email</label>
                         <input class="form-control" type="email" name="email" value="{{ old('email') }}" required=""
-                           placeholder="Test@gmail.com">
+                           placeholder="email@gmail.com">
                      </div>
                      <div class="form-group">
                         <label class="col-form-label">Password</label>
@@ -41,7 +50,7 @@
                         <div class="show-hide"><span class="show"> </span></div>
                      </div>
                      <div class="form-group pt-2 mb-0">
-                        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+                        <button class="btn btn-primary wide-button" type="submit">Sign in</button>
                      </div>
                   </form>
                </div>

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('resellers', function (Blueprint $table) {
             $table->uuid('id')->unique();
             $table->foreignUuid('user_id')->unique();
+            $table->string('foto_profil')->nullable();
+            $table->string('nama_foto_original')->nullable();
             $table->string('nama');
             $table->string('no_hp');
             $table->string('provinsi');

@@ -44,7 +44,6 @@
 <h3>Change Password</h3>
 @endsection
 
-
 @section('content')
 <div class="container-fluid">
     <div class="card">
@@ -61,7 +60,7 @@
                             @if(auth()->user()->reseller->foto_profil)
                             <img src="{{ auth()->user()->reseller->foto_profil }}" alt="Foto Profil" class="square-image">
                             @else
-                            <img src="/assets/images/placeholder.png" alt="Foto Profil" class="square-image">
+                            <img src="/assets/images/profil-preview.jpg" alt="Foto Profil" class="square-image">
                             @endif
                         </div>
                     </div>
@@ -72,18 +71,18 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-8">
-                                <input class="form-control" id="new-password" type="password" placeholder="Masukkan Kata Sandi Baru">
+                                <input class="form-control" id="password" name="password" type="password" placeholder="Masukkan Kata Sandi Baru">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-8">
-                                <input class="form-control" id="confirm-password" type="password" placeholder="Ketik Ulang Kata Sandi Baru">
+                                <input class="form-control" id="password_confirmation" name="password_confirmation" type="password" placeholder="Ketik Ulang Kata Sandi Baru">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-8">
-                                <button type="button" class="btn custom-button" id="btn-cancel">Batal</button>
-                                <a href="#" class="btn custom-button" id="btn-save-password">Simpan</a>
+                                <a href="{{ route('profile') }}" class="btn custom-button" id="btn-save-password">Batal</a>
+                                <button type="button" class="btn custom-button" id="btn-change-password">Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -109,10 +108,24 @@
 
 <script>
     (function () {
-        $('#btn-update-reseller').click(function () {
+        $('#btn-change-password').click(function () {
+            var password = $('#password').val();
+            var passwordConfirmation = $('#password_confirmation').val();
+
+            if (password !== passwordConfirmation) {
+                Swal.fire({
+                    title: 'Gagal',
+                    text: 'Kata sandi dan konfirmasi kata sandi tidak cocok.',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
             var formData = new FormData($('#form-update-reseller')[0]);
             $.ajax({
-                url: '/update-profile-reseller',
+                url: '/change-password',
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -141,7 +154,6 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(status, xhr, error)
                     Swal.fire({
                         title: 'Gagal',
                         text: 'Terjadi kesalahan saat mengirim permintaan.',

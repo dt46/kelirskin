@@ -26,7 +26,9 @@ class Reseller extends Model
         'kecamatan',
         'alamat_detail',
         'foto_ktp',
-        'nama_file_original'
+        'nama_file_original',
+        'foto_profil',
+        'nama_foto_original'
     ];
 
     public function user(): BelongsTo

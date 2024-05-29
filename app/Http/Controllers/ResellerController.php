@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\StoreResellerRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\UpdateResellerRequest;
 use App\Http\Requests\UpdateResellerStatusRequest;
 use App\Http\Resources\ResellerResource;
@@ -10,6 +12,7 @@ use App\Models\Reseller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ResellerController extends Controller
@@ -120,7 +123,7 @@ class ResellerController extends Controller
                 $request->validated();
                 $reseller = auth()->user()->reseller;
                 $fotoProdukPath = $reseller->foto_profil;
-                $originalName = $reseller->nama_file_original;
+                $originalName = $reseller->nama_foto_original;
         
                 if ($request->hasFile('foto_profil')) {
                     $file = $request->file('foto_profil');
@@ -138,11 +141,14 @@ class ResellerController extends Controller
         
                 $reseller->nama = $request->nama;
                 $reseller->no_hp = $request->no_hp;
+                $reseller->provinsi = $request->provinsi;
+                $reseller->kota = $request->kota;
+                $reseller->kecamatan = $request->kecamatan;
                 $reseller->alamat_detail = $request->alamat_detail;
                 
                 if ($request->hasFile('foto_profil')) {
                     $reseller->foto_profil = $fotoProdukPath;
-                    $reseller->nama_file_original = $originalName;
+                    $reseller->nama_foto_original = $originalName;
                 }
         
                 $reseller->save();
@@ -154,6 +160,22 @@ class ResellerController extends Controller
         }
     }
 
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            try {
+                $request->validated();
+                $user = auth()->user();
+    
+                $user->password = Hash::make($request->password);
+                $user->save();
+    
+                return response()->json(['message' => 'Password Berhasil Diganti', 'status' => true], 200);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Terjadi Kesalahan: ' . $e->getMessage(), 'status' => false], 500);
+            }
+        }
+    }
     public function destroy(Reseller $reseller)
     {
         //

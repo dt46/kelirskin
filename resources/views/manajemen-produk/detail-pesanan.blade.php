@@ -89,7 +89,7 @@ $(document).ready(function() {
         paging: false,
         buttons: [],
         ajax: {
-            url: '/detail-pesanan' ,
+            url: '/detail-pesanan/{{ $order->id }}' ,
             type: 'GET',
             dataSrc: function (json) {
                 return json.data;

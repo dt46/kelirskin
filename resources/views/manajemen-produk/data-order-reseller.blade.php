@@ -91,7 +91,6 @@
                         <thead>
                             <tr>
                                 <th>Tgl. Pesan</th>
-                                <th>Bukti Pembayaran</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
                                 <th>Harga</th>
@@ -132,6 +131,8 @@
                             <select class="form-control form-select" name="status" id="status" required>
                                 <option value="verifikasi">Verifikasi</option>
                                 <option value="dikirim">Dikirim</option>
+                                <option value="diterima">Diterima</option>
+                                <option value="selesai">Selesai</option>
                             </select>
                         </div>
                     </div>
@@ -181,7 +182,7 @@
                 }
             ],
         ajax: {
-            url: '/daftar-order',
+            url: '/daftar-pesanan',
             type: 'GET',
             dataSrc: function (json) {
                 return json.data;
@@ -197,16 +198,6 @@
                     var year = date.getFullYear();
                     return day + '/' + month + '/' + year;
                 } 
-            },
-            { 
-                data: 'bukti_pembayaran',
-                render: function (data, type, row) {
-                    if (data) {
-                        return `<a class="btn btn-sm btn-info px-3" href="${data}" download="${row.nama_file_original}">Unduh</a>`;
-                    } else {
-                        return 'Tidak ada bukti pembayaran';
-                    }
-                }
             },
             { data: 'nama' },
             { data: 'alamat_detail' },
@@ -303,17 +294,11 @@
                 } else {
                     $('#status').val("selesai");
                 }
-                // Disable status dropdown if no_resi is not empty
-                if (data.no_resi) {
-                    $('#status').prop('disabled', true);
-                } else {
-                    $('#status').prop('disabled', false);
-                }
             },
             error: function(error){
                 console.error(error);
             }
-        });
+        })
 
         function toggleStatusBtn(disabled, buttonsSelector) {
             $(buttonsSelector).prop('disabled', disabled);
