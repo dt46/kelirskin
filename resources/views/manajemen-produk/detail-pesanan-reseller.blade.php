@@ -86,7 +86,7 @@ $(document).ready(function() {
         paging: false,
         buttons: [],
         ajax: {
-            url: '{{ route("detail-pesanan", $order->id) }}' ,
+            url: '{{ route("detail-pesanan-reseller", $order->id) }}' ,
             type: 'GET',
             dataSrc: function (json) {
                 return json.data;

@@ -58,7 +58,7 @@
                     </tr>
                     <tr>
                         <td><b>Berat</b></td>
-                        <td>: {{ $product->beratProduk }} gram</td>
+                        <td>: {{ $product->beratProduk }} ml</td>
                     </tr>
                 </tbody>
                </table>

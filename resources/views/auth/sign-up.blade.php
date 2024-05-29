@@ -159,8 +159,9 @@ input[type="file"]:focus {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body">
-            <!-- Insert your terms and conditions content here -->
-            <p>Isi dari syarat dan ketentuan Kelirskin...</p>
+            <p>1. 500k transaksi pertama abis itu min 200k produk bebas. Diskon 50% dari harga retail.</p>
+            <p>2. Produk tidak boleh digunakan secara pribadi.</p>
+            <p>3. Jika tidak melakukan transaksi selama 1 bulan maka status keaktifan reseller akan hangus kecuali ada kendala tertentu.</p>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

@@ -83,6 +83,8 @@
                             <button class="btn btn-sm btn-success" id="export2excel" type="button"><i
                                     class="fa fa-file-excel-o"></i> Export</button>
                             <button class="btn btn-sm btn-info px-3" style="color: white;" id="ubah-data-agen" type="button">Proses</button>
+                            <button class="btn btn-sm btn-danger px-3" id="hapus-data-produk" type="button">Hapus Data
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -164,31 +166,31 @@
 <script src="/assets/js/height-equal.js"></script>
 
 <script>
-(function(){
+(function() {
     const tableorder = new DataTable('#tabel-daftar-order', {
         fixedColumns: true,
         scrollX: true,
         dom: 'Bfrtip',
-        searching: true, 
+        searching: true,
         buttons: [
-                {
-                    extend: 'excelHtml5',
-                    className: '_exportExcel d-none',
-                    title: `Data Order - {{ auth()->user()->name }}`,
-                    exportOptions: {
-                        columns: ':not(:eq(2))'
-                    }
+            {
+                extend: 'excelHtml5',
+                className: '_exportExcel d-none',
+                title: `Data Order - {{ auth()->user()->name }}`,
+                exportOptions: {
+                    columns: ':not(:eq(2))'
                 }
-            ],
+            }
+        ],
         ajax: {
             url: '/daftar-order',
             type: 'GET',
-            dataSrc: function (json) {
+            dataSrc: function(json) {
                 return json.data;
             }
         },
         columns: [
-            { 
+            {
                 data: 'tanggal',
                 render: function(data, type, row) {
                     var date = new Date(data);
@@ -196,11 +198,11 @@
                     var month = date.getMonth() + 1;
                     var year = date.getFullYear();
                     return day + '/' + month + '/' + year;
-                } 
+                }
             },
-            { 
+            {
                 data: 'bukti_pembayaran',
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     if (data) {
                         return `<a class="btn btn-sm btn-info px-3" href="${data}" download="${row.nama_file_original}">Unduh</a>`;
                     } else {
@@ -210,21 +212,21 @@
             },
             { data: 'nama' },
             { data: 'alamat_detail' },
-            { 
+            {
                 data: 'total_harga',
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     return 'Rp' + data;
                 }
             },
-            { 
+            {
                 data: 'no_resi',
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     return data ? data : 'No Resi Belum di Berikan';
                 }
             },
-            { 
+            {
                 data: 'status',
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     let badgeClass = '';
                     let statusText = '';
                     if (data === 'verifikasi') {
@@ -238,16 +240,16 @@
                         statusText = 'Diterima';
                     } else {
                         badgeClass = 'badge-success';
-                        statusText = 'Selesai'
+                        statusText = 'Selesai';
                     }
                     return '<span class="badge ' + badgeClass + '">' + statusText + '</span>';
                 }
             },
             {
                 data: 'id',
-                render: function (data, type, row, meta) {
-                    var url = "{{ route('detail-pesanan', ['id' => ':id']) }}";
-                    url = url.replace(':id', row.id);
+                render: function(data, type, row, meta) {
+                    var url = "{{ route('detail-pesanan', ['id' => 'id']) }}";
+                    url = url.replace('id', row.id);
                     return '<a class="btn btn-sm" style="background-color:#AB764E; color:white;" href="' + url + '">Detail Pesanan</a>';
                 }
             },
@@ -268,8 +270,7 @@
 
         if (classList.contains('selected')) {
             classList.remove('selected');
-        }
-        else {
+        } else {
             tableorder.rows('.selected').nodes().each((row) => row.classList.remove('selected'));
             classList.add('selected');
         }
@@ -278,66 +279,45 @@
     const modalUbahAgen = new bootstrap.Modal(document.querySelector('.ubah-data-agen'), {
         keyboard: false
     });
-    $('button#ubah-data-agen').on('click', function(){
-        const idAgen = tableorder.row('.selected').id();
-        idAgen ? modalUbahAgen.show() : modalUbahAgen.hide();
-    });
-    $('.ubah-data-agen').on('shown.bs.modal', function() {
-        idAgen = tableorder.row('.selected').data().id;
-        $.ajax({
-            url: '/update-status/' + idAgen,
-            method: 'GET',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response){
-                data = response.data;
-                $('#id').val(data.id);
-                $('#no_resi').val(data.no_resi);
-                if (data.status) {
-                    $('#status').val("verifikasi"); 
-                } else if (data.status) {
-                    $('#status').val("dikirim");
-                } else if (data.status) {
-                    $('#status').val("diterima");
-                } else {
-                    $('#status').val("selesai");
-                }
-                // Disable status dropdown if no_resi is not empty
-                if (data.no_resi) {
-                    $('#status').prop('disabled', true);
-                } else {
-                    $('#status').prop('disabled', false);
-                }
-            },
-            error: function(error){
-                console.error(error);
-            }
-        });
 
-        function toggleStatusBtn(disabled, buttonsSelector) {
-            $(buttonsSelector).prop('disabled', disabled);
+    $('button#ubah-data-agen').on('click', function() {
+        const selectedRow = tableorder.row('.selected').data();
+        if (selectedRow) {
+            const idAgen = selectedRow.id;
+            modalUbahAgen.show();
+            // Load data for the selected order
+            $.ajax({
+                url: '/update-status/' + idAgen,
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    const data = response.data;
+                    $('#id').val(data.id);
+                    $('#no_resi').val(data.no_resi);
+                    $('#status').val(data.status);
+                    $('#status').prop('disabled', !!data.no_resi);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
         }
+    });
 
-        toggleStatusBtn(true, '#simpan-agen');
-
-        $(".form-control").on('change input', function() {
-            toggleStatusBtn(false, "#simpan-agen")
-        });
-
-        $('#simpan-agen').off('click').on('click', function(){
+    $('.ubah-data-agen').on('shown.bs.modal', function() {
+        $('#simpan-agen').off('click').on('click', function() {
             $('#form-agen').submit();
         });
 
-        $('#form-agen').off('submit').on('submit', function(e){
+        $('#form-agen').off('submit').on('submit', function(e) {
             e.preventDefault();
 
-            toggleStatusBtn(true, '#batal-agen, #simpan-agen');
-
-            let formData = new FormData($(this)[0]);
-            let plainFormData = {};
-
-            formData.forEach(function(value, key){
+            const formData = new FormData($(this)[0]);
+            const idAgen = $('#id').val();
+            const plainFormData = {};
+            formData.forEach(function(value, key) {
                 plainFormData[key] = value;
             });
 
@@ -351,30 +331,88 @@
                 },
                 success: function(response) {
                     $('.ubah-data-agen').modal('hide');
-
-                    let _msgTitle = response.status ? 'Berhasil' : 'Gagal';
-                        let _msg = response.status ? 'Data mengirimkan Resi' : 'Gagal mengirimkan Resi, terdapat kesalahan sistem.';
-                        let _icon = response.status ? 'success' : 'error';
-
-                        Swal.fire({
-                            title: _msgTitle,
-                            text: _msg,
-                            position: "center",
-                            showConfirmButton: false,
-                            icon: _icon,
-                            timer: 2000
-                        });
-
+                    Swal.fire({
+                        title: response.status ? 'Berhasil' : 'Gagal',
+                        text: response.status ? 'Data berhasil diperbarui' : 'Gagal memperbarui data',
+                        icon: response.status ? 'success' : 'error',
+                        timer: 2000
+                    });
                     tableorder.ajax.reload();
                 },
                 error: function(error) {
-                    console.log(error);
+                    console.error(error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat memperbarui data',
+                        icon: 'error',
+                        timer: 2000
+                    });
                 }
-            }).done(function(){
-                toggleStatusBtn(false, '#batal-agen, #simpan-agen');
             });
-
         });
+    });
+
+    $('#hapus-data-produk').on('click', function() {
+        const selectedRows = tableorder.rows('.selected').data();
+        if (selectedRows.length === 0) {
+            Swal.fire({
+                title: 'Tidak Ada Pesanan yang Dipilih',
+                text: 'Silakan pilih pesanan yang ingin dihapus.',
+                icon: 'warning',
+                timer: 2000
+            });
+        } else {
+            Swal.fire({
+                title: 'Anda yakin ingin menghapus pesanan yang dipilih?',
+                text: 'Tindakan ini tidak dapat dibatalkan!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const idsToDelete = selectedRows.map(row => row.id);
+                    idsToDelete.each((id) => {
+                        $.ajax({
+                            url: '/delete-order/' + id,
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                if (response.status) {
+                                    Swal.fire({
+                                        title: 'Berhasil',
+                                        text: 'Pesanan berhasil dihapus.',
+                                        icon: 'success',
+                                        timer: 2000
+                                    }).then(() => {
+                                        tableorder.ajax.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Gagal',
+                                        text: 'Terjadi kesalahan saat menghapus pesanan.',
+                                        icon: 'error',
+                                        timer: 2000
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan saat menghapus pesanan.',
+                                    icon: 'error',
+                                    timer: 2000
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        }
     });
 })();
 </script>

@@ -97,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/daftar-order', 'index')->name('daftar-order');
         Route::get('/update-status/{order}', 'showOrderId');
         Route::put('/update-resi/{order}', 'update');   
+        Route::delete('/delete-order/{id}', 'destroy');   
     });
 
     Route::controller(OrderController::class)->middleware('IsReseller')->group(function () {
@@ -121,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::controller(OrderController::class)->middleware('IsReseller')->group(function () {
         Route::post('/payment', 'store');
+        Route::get('/detail-pesanan-reseller/{id}', 'showDetailReseller')->name('detail-pesanan-reseller');
     });
 
     Route::controller(ResellerController::class)->middleware('IsReseller')->group(function () {
@@ -132,7 +134,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(OrderController::class)->middleware('AdminOrReseller')->group(function () {
         Route::get('/detail-pesanan/{id}', 'showDetail')->name('detail-pesanan');
-        Route::get('/detail-pesanan', 'showTabeldetail')->name('detail-pesanann');
     });
 });
 

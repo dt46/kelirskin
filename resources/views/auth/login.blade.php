@@ -38,8 +38,10 @@
                   @endif
                   <form class="theme-form" method="post" action="/signin">
                      @csrf
-                     <h4>Ayo Masuk Kembali!</h4>
-                     <p class="mt-4 mb-0">Belum pernah daftar? <a class="ms-2" href="{{ route('signup') }}">Daftar</a> dulu yuk</p>
+                     <center>
+                        <h4>Ayo Masuk Kembali!</h4>
+                        <p class="mb-2">Belum pernah daftar? <a class="ms-2" href="{{ route('signup') }}">Daftar</a> dulu yuk</p>
+                     </center>
                      <div class="form-group">
                         <label class="col-form-label">Email</label>
                         <input class="form-control" type="email" name="email" required="" value="{{ old('email') }}"

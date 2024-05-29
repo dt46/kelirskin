@@ -124,13 +124,13 @@
                         <input type="text" id="id" hidden>
                         <div class="mb-3">
                             <label class="col-form-label">No Resi</label>
-                            <input class="form-control" type="text" name="no_resi" id="no_resi" required>
+                            <input class="form-control" type="text" name="no_resi" id="no_resi" disabled>
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Status</label>
                             <select class="form-control form-select" name="status" id="status" required>
-                                <option value="verifikasi">Verifikasi</option>
-                                <option value="dikirim">Dikirim</option>
+                                <option value="verifikasi" hidden>Verifikasi</option>
+                                <option value="dikirim" hidden>Dikirim</option>
                                 <option value="diterima">Diterima</option>
                                 <option value="selesai">Selesai</option>
                             </select>
@@ -165,57 +165,57 @@
 <script src="/assets/js/height-equal.js"></script>
 
 <script>
-(function(){
+(function() {
     const tableorder = new DataTable('#tabel-daftar-order', {
         fixedColumns: true,
         scrollX: true,
         dom: 'Bfrtip',
-        searching: true, 
+        searching: true,
         buttons: [
-                {
-                    extend: 'excelHtml5',
-                    className: '_exportExcel d-none',
-                    title: `Data Order - {{ auth()->user()->name }}`,
-                    exportOptions: {
-                        columns: ':not(:eq(2))'
-                    }
+            {
+                extend: 'excelHtml5',
+                className: '_exportExcel d-none',
+                title: `Data Order - {{ auth()->user()->name }}`,
+                exportOptions: {
+                    columns: ':not(:eq(2))'
                 }
-            ],
+            }
+        ],
         ajax: {
             url: '/daftar-pesanan',
             type: 'GET',
-            dataSrc: function (json) {
+            dataSrc: function(json) {
                 return json.data;
             }
         },
         columns: [
-            { 
+            {
                 data: 'tanggal',
-                render: function(data, type, row) {
+                render: function(data) {
                     var date = new Date(data);
                     var day = date.getDate();
                     var month = date.getMonth() + 1;
                     var year = date.getFullYear();
                     return day + '/' + month + '/' + year;
-                } 
+                }
             },
             { data: 'nama' },
             { data: 'alamat_detail' },
-            { 
+            {
                 data: 'total_harga',
-                render: function (data, type, row) {
+                render: function(data) {
                     return 'Rp' + data;
                 }
             },
-            { 
+            {
                 data: 'no_resi',
-                render: function (data, type, row) {
+                render: function(data) {
                     return data ? data : 'No Resi Belum di Berikan';
                 }
             },
-            { 
+            {
                 data: 'status',
-                render: function (data, type, row) {
+                render: function(data) {
                     let badgeClass = '';
                     let statusText = '';
                     if (data === 'verifikasi') {
@@ -229,24 +229,24 @@
                         statusText = 'Diterima';
                     } else {
                         badgeClass = 'badge-success';
-                        statusText = 'Selesai'
+                        statusText = 'Selesai';
                     }
                     return '<span class="badge ' + badgeClass + '">' + statusText + '</span>';
                 }
             },
             {
                 data: 'id',
-                render: function (data, type, row, meta) {
-                    var url = "{{ route('detail-pesanan', ['id' => ':id']) }}";
+                render: function(data, type, row) {
+                    var url = "{{ route('detail-pesanan-reseller', ['id' => ':id']) }}";
                     url = url.replace(':id', row.id);
                     return '<a class="btn btn-sm" style="background-color:#AB764E; color:white;" href="' + url + '">Detail Pesanan</a>';
                 }
-            },
+            }
         ],
         columnDefs: [
             {
                 visible: false,
-            },
+            }
         ]
     });
 
@@ -259,8 +259,7 @@
 
         if (classList.contains('selected')) {
             classList.remove('selected');
-        }
-        else {
+        } else {
             tableorder.rows('.selected').nodes().each((row) => row.classList.remove('selected'));
             classList.add('selected');
         }
@@ -269,36 +268,34 @@
     const modalUbahAgen = new bootstrap.Modal(document.querySelector('.ubah-data-agen'), {
         keyboard: false
     });
-    $('button#ubah-data-agen').on('click', function(){
+
+    $('button#ubah-data-agen').on('click', function() {
         const idAgen = tableorder.row('.selected').id();
-        idAgen ? modalUbahAgen.show() : modalUbahAgen.hide();
+        if (idAgen) {
+            modalUbahAgen.show();
+        } else {
+            modalUbahAgen.hide();
+        }
     });
+
     $('.ubah-data-agen').on('shown.bs.modal', function() {
-        idAgen = tableorder.row('.selected').data().id;
+        const idAgen = tableorder.row('.selected').data().id;
         $.ajax({
-            url: '/update-status/' + idAgen,
+            url: '/update-status-order/' + idAgen,
             method: 'GET',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(response){
-                data = response.data;
+            success: function(response) {
+                const data = response.data;
                 $('#id').val(data.id);
                 $('#no_resi').val(data.no_resi);
-                if (data.status) {
-                    $('#status').val("verifikasi"); 
-                } else if (data.status) {
-                    $('#status').val("dikirim");
-                } else if (data.status) {
-                    $('#status').val("diterima");
-                } else {
-                    $('#status').val("selesai");
-                }
+                $('#status').val(data.status);
             },
-            error: function(error){
+            error: function(error) {
                 console.error(error);
             }
-        })
+        });
 
         function toggleStatusBtn(disabled, buttonsSelector) {
             $(buttonsSelector).prop('disabled', disabled);
@@ -307,14 +304,14 @@
         toggleStatusBtn(true, '#simpan-agen');
 
         $(".form-control").on('change input', function() {
-            toggleStatusBtn(false, "#simpan-agen")
+            toggleStatusBtn(false, "#simpan-agen");
         });
 
-        $('#simpan-agen').off('click').on('click', function(){
+        $('#simpan-agen').off('click').on('click', function() {
             $('#form-agen').submit();
         });
 
-        $('#form-agen').off('submit').on('submit', function(e){
+        $('#form-agen').off('submit').on('submit', function(e) {
             e.preventDefault();
 
             toggleStatusBtn(true, '#batal-agen, #simpan-agen');
@@ -322,12 +319,12 @@
             let formData = new FormData($(this)[0]);
             let plainFormData = {};
 
-            formData.forEach(function(value, key){
+            formData.forEach(function(value, key) {
                 plainFormData[key] = value;
             });
 
             $.ajax({
-                url: '/update-resi/' + idAgen,
+                url: '/update-status-order/' + idAgen,
                 method: 'PUT',
                 data: JSON.stringify(plainFormData),
                 contentType: 'application/json',
@@ -338,30 +335,30 @@
                     $('.ubah-data-agen').modal('hide');
 
                     let _msgTitle = response.status ? 'Berhasil' : 'Gagal';
-                        let _msg = response.status ? 'Data mengirimkan Resi' : 'Gagal mengirimkan Resi, terdapat kesalahan sistem.';
-                        let _icon = response.status ? 'success' : 'error';
+                    let _msg = response.status ? 'Data mengirimkan Resi' : 'Gagal mengirimkan Resi, terdapat kesalahan sistem.';
+                    let _icon = response.status ? 'success' : 'error';
 
-                        Swal.fire({
-                            title: _msgTitle,
-                            text: _msg,
-                            position: "center",
-                            showConfirmButton: false,
-                            icon: _icon,
-                            timer: 2000
-                        });
+                    Swal.fire({
+                        title: _msgTitle,
+                        text: _msg,
+                        position: "center",
+                        showConfirmButton: false,
+                        icon: _icon,
+                        timer: 2000
+                    });
 
                     tableorder.ajax.reload();
                 },
                 error: function(error) {
                     console.log(error);
                 }
-            }).done(function(){
+            }).done(function() {
                 toggleStatusBtn(false, '#batal-agen, #simpan-agen');
             });
-
         });
     });
 })();
+
 </script>
 
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\UpdateOrderStatusRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\Reseller;
@@ -69,64 +70,61 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
         $id_reseller = $order->id_reseller;
-        
         $countCart = Cart::where('id_reseller', $id_reseller)
-            ->whereDate('deleted_at', $order->tanggal)
             ->count();
         
         $totalHarga = Cart::where('id_reseller', $id_reseller)
-            ->whereDate('deleted_at', $order->tanggal)
             ->sum('total_harga');
         
-        $reseller = Reseller::findOrFail($id_reseller);
-        $data = [
-            'countCart' => $countCart,
-            'totalHarga' => $totalHarga,
-            'alamat' => $reseller->alamat_detail,
-            'no_hp' => $reseller->no_hp,
-        ];
-        
-        $orderDetails = Order::join('resellers', 'orders.id_reseller', '=', 'resellers.id')
-            ->join('carts', 'resellers.id', '=', 'carts.id_reseller')
-            ->join('products', 'carts.id_produk', '=', 'products.id')
-            ->select('products.id', 'products.namaProduk', 'products.hargaProduk', 'products.fotoProduk', 'carts.total_harga', 'carts.jumlah_produk')
-            ->where('orders.id', $id)
-            ->whereDate('carts.deleted_at', $order->tanggal)
-            ->get();
-        
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json([
-                'status' => true,
-                'data' => $orderDetails,
-                'summary' => $data,
-            ], 200);
-        }
-    
-        // Jika bukan AJAX, kembalikan ke view dengan data yang diperlukan
-        return view('manajemen-produk.detail-pesanan', compact('order') + $data);
-    }
-    
-    
+        $alamat = Reseller::where('id', $id_reseller)->value('alamat_detail');
+        $no_hp = Reseller::where('id', $id_reseller)->value('no_hp');
 
-    public function showTabeldetail(Request $request)
-    {
         if ($request->ajax() || $request->wantsJson()) {
-    
-            $order = Order::join('resellers', 'orders.id_reseller', 'resellers.id')
+            $orderDetails = Order::join('resellers', 'orders.id_reseller', 'resellers.id')
                 ->join('carts', 'resellers.id', 'carts.id_reseller')
                 ->join('products', 'carts.id_produk', 'products.id')
-                ->select('products.id', 'products.namaProduk', 'products.hargaProduk', 'products.fotoProduk', 'carts.total_harga', 'carts.jumlah_produk')
-                ->whereColumn('carts.id_reseller', 'orders.id_reseller')
-                ->whereDate('carts.deleted_at', DB::raw('orders.tanggal::date'))
+                ->select('products.namaProduk', 'products.fotoProduk', 'carts.total_harga', 'carts.jumlah_produk')
+                ->where('orders.id', $order->id)
                 ->get();
-    
+
             return response()->json([
                 'status' => true,
-                'data' => $order
+                'data' => $orderDetails
             ], 200);
         }
 
-        return view('manajemen-produk.detail-pesanan');
+        return view('manajemen-produk.detail-pesanan', compact('order', 'countCart', 'totalHarga', 'alamat', 'no_hp'));
+    }
+    public function showDetailReseller(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        $id_reseller = $order->id_reseller;
+        $user = auth()->user()->reseller->id;
+        $countCart = Cart::where('id_reseller', $id_reseller)
+            ->count();
+        
+        $totalHarga = Cart::where('id_reseller', $id_reseller)
+            ->sum('total_harga');
+        
+        $alamat = Reseller::where('id', $id_reseller)->value('alamat_detail');
+        $no_hp = Reseller::where('id', $id_reseller)->value('no_hp');
+
+        if ($request->ajax() || $request->wantsJson()) {
+            $orderDetails = Order::join('resellers', 'orders.id_reseller', 'resellers.id')
+                ->join('carts', 'resellers.id', 'carts.id_reseller')
+                ->join('products', 'carts.id_produk', 'products.id')
+                ->select('products.namaProduk', 'products.fotoProduk', 'carts.total_harga', 'carts.jumlah_produk')
+                ->where('orders.id', $order->id)
+                ->where('orders.id_reseller', $user)
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'data' => $orderDetails
+            ], 200);
+        }
+
+        return view('manajemen-produk.detail-pesanan-reseller', compact('order', 'countCart', 'totalHarga', 'alamat', 'no_hp'));
     }
 
     /**
@@ -252,11 +250,36 @@ class OrderController extends Controller
         return response()->json(['status' => false], 401);
     }
 
+    public function updateStatus(UpdateOrderStatusRequest $request, Order $order)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $validated = $request->validated();
+
+            $order->status = $validated['status'];
+            $order->save();
+    
+            return response()->json([
+                'status' => true,
+                'data' => new OrderResource($order)
+            ], 201);
+        }
+    
+        return response()->json(['status' => false], 401);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Request $request, $id)
     {
-        //
+        if ($request->ajax() || $request->wantsJson()) {
+            $product = Order::find($id);
+            $product->delete();
+
+            return response()->json([
+                'status' => true,
+            ], 201);
+        }
+        return abort(404);
     }
 }

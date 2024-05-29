@@ -71,10 +71,12 @@ class SignUpController extends Controller
                     'coordinates' => [$coordinates['lon'], $coordinates['lat']]
                 ],
                 'properties' => [
-                    'alamat' => $req['alamat_detail'],
-                    'provinsi' => $req['provinsi'],
-                    'kota' => $req['kota'],
-                    'kecamatan' => $req['kecamatan'],
+                    'Nama' => $req['nama'],
+                    'No Handphone' => $req['no_hp'],
+                    'Provinsi' => $req['provinsi'],
+                    'Kota' => $req['kota'],
+                    'Kecamatan' => $req['kecamatan'],
+                    'Alamat' => $req['alamat_detail'],
                 ]
             ];
             
