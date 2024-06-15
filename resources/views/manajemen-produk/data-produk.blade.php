@@ -232,7 +232,7 @@
                 {
                     data: 'beratProduk',
                     render: function (data) {
-                        return `${data} gram`;
+                        return `${data} ml`;
                     },
                     className: 'text-center'
                 },
