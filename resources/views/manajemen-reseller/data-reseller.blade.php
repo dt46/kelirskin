@@ -78,19 +78,12 @@
             <div class="card">
                 <div class="card-header">
                     <h5>Daftar Reseller</h5>
+                    <button class="btn btn-sm btn-info px-3" style="color: white;" id="ubah-data-agen" type="button">Ubah Data
+                    </button>
+                    <button class="btn btn-sm btn-danger px-3" id="btn-verify" type="button">Hapus Data
+                    </button>
                 </div>
                 <div class="card-body"> 
-                    <div class="d-flex justify-content-between mb-4">
-                        <div>
-                            <input type="text" class="form-control form-control-sm" id="search" placeholder="Search">
-                        </div>
-                        <div>
-                            <button class="btn btn-sm btn-info px-3" style="color: white;" id="ubah-data-agen" type="button">Ubah Data
-                            </button>
-                            <button class="btn btn-sm btn-danger px-3" id="btn-verify" type="button">Hapus Data
-                            </button>
-                        </div>
-                    </div>
                     <table id="tabel-daftar-reseller" class="nowrap table table-striped table-bordered border-secondary">
                         <thead>
                             <tr>
@@ -279,20 +272,16 @@
                 $(buttonsSelector).prop('disabled', disabled);
             }
 
-            // Disable submit ketika tidak ada perubahan
             toggleStatusBtn(true, '#simpan-agen');
 
-            // Enable submit ketika ada perubahan
             $(".form-control").on('change input', function() {
                 toggleStatusBtn(false, "#simpan-agen")
             });
 
-            // Submit form agen ketik klik simpan
             $('#simpan-agen').off('click').on('click', function(){
                 $('#form-agen').submit();
             });
 
-            // Handle submit form agen
             $('#form-agen').off('submit').on('submit', function(e){
                 e.preventDefault();
 
@@ -342,5 +331,4 @@
         });
     })();
 </script>
-
 @endsection
