@@ -77,13 +77,15 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Daftar Reseller</h5>
-                    <button class="btn btn-sm btn-info px-3" style="color: white;" id="ubah-data-agen" type="button">Ubah Data
-                    </button>
-                    <button class="btn btn-sm btn-danger px-3" id="btn-verify" type="button">Hapus Data
-                    </button>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>Daftar Reseller</h5>
+                        <button class="btn btn-sm btn-info px-3" style="color: white;" id="ubah-data-agen" type="button">Ubah Data
+                        </button>
+                        <button class="btn btn-sm btn-danger px-3" id="btn-verify" type="button">Hapus Data
+                        </button>
+                    </div>
                 </div>
-                <div class="card-body"> 
+                <div class="card-body">
                     <table id="tabel-daftar-reseller" class="nowrap table table-striped table-bordered border-secondary">
                         <thead>
                             <tr>
@@ -178,7 +180,7 @@
             fixedColumns: true,
             scrollX: true,
             dom: 'Bfrtip',
-            searching: false, 
+            searching: false,
             buttons: [],
             ajax: {
                 url: '/daftar-reseller',
@@ -199,7 +201,7 @@
                 { data: 'email' },
                 { data: 'no_hp' },
                 { data: 'alamat_detail' },
-                { 
+                {
                     data: 'status',
                     render: function (data, type, row) {
                         if (data == 'true' || data == 1) {
@@ -258,7 +260,7 @@
                     $('#no_hp').val(data.no_hp);
                     $('#alamat_detail').val(data.alamat_detail);
                     if (data.status) {
-                        $('#status').val("1"); 
+                        $('#status').val("1");
                     } else {
                         $('#status').val("0");
                     }
